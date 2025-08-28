@@ -14,7 +14,6 @@ import { Separator } from "@/components/ui/separator";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { BrandButton } from "@/components/shared/BrandButton";
 import { FeatureCard } from "@/components/shared/FeatureCard";
-import { Description } from "@radix-ui/react-dialog";
 
 const BRAND = { cream: "#f5f2e1", navy: "#000080", gold: "#e38d1a" };
 
@@ -127,7 +126,7 @@ export default function Home() {
         <div className="relative z-10 h-full w-full flex items-center">
           <div className="container-max px-6 lg:px-10">
             <motion.h1 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="max-w-5xl text-5xl md:text-7xl font-extrabold leading-tight text-[var(--color-brand-cream)]">
-              Global robotics and STEM community preparing youth for tomorrow's challenges
+              Global robotics and STEM community preparing youth for tomorrow&apos;s challenges
             </motion.h1>
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }} className="mt-6 flex flex-wrap items-center gap-3">
               <BrandButton asChild><Link href="#about" className="inline-flex items-center gap-2">Learn more <ArrowRight className="w-4 h-4" /></Link></BrandButton>
