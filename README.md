@@ -1,7 +1,7 @@
 # Qarabag MecHack
 
 <div align="center">
-  <img src="/logo/logo.jpg" alt="Qarabag MecHack Logo" width="200" height="200" style="border-radius: 50%;" />
+  <img src="/public/logo/logo.jpg" alt="Qarabag MecHack Logo" width="200" height="200" style="border-radius: 50%;" />
 
   [![Next.js](https://img.shields.io/badge/Next.js-15.0.0-black)](https://nextjs.org/)
   [![TypeScript](https://img.shields.io/badge/TypeScript-5.0.0-blue)](https://www.typescriptlang.org/)
