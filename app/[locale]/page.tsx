@@ -107,15 +107,27 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="relative h-[92vh] w-full overflow-hidden">
-        <video className="absolute inset-0 h-full w-full object-cover" src="/intro/intro.mp4" autoPlay loop muted playsInline crossOrigin="anonymous" />
+            {/* Hero */}
+            <section className="relative h-[92vh] w-full overflow-hidden">
+        {/* Desktop: Video göster */}
+        <video 
+          className="absolute inset-0 h-full w-full object-cover hidden md:block" 
+          src="/intro/intro.mp4" 
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          crossOrigin="anonymous" 
+        />
+        {/* Mobile: Sadece resim göster */}
+        <div className="absolute inset-0 h-full w-full bg-cover bg-center bg-no-repeat md:hidden" 
+             style={{backgroundImage: 'url("/bg/mobile-bg.png")'}} />
         <div className="absolute inset-0 brand-gradient opacity-60 mix-blend-multiply" />
         <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,.6),rgba(0,0,0,.15))]" />
         <div className="relative z-10 h-full w-full flex items-center">
           <div className="container-max px-6 lg:px-10">
             <motion.h1 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="max-w-5xl text-5xl md:text-7xl font-extrabold leading-tight text-[var(--color-brand-cream)]">
-              Global robotics and STEM community preparing youth for tomorrow’s challenges
+              Global robotics and STEM community preparing youth for tomorrow's challenges
             </motion.h1>
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }} className="mt-6 flex flex-wrap items-center gap-3">
               <BrandButton asChild><Link href="#about" className="inline-flex items-center gap-2">Learn more <ArrowRight className="w-4 h-4" /></Link></BrandButton>
