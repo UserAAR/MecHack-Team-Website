@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Qarabag MecHack",
-  description: "Official website of Qarabag MecHack FRC team",
+  title: "MecHack Qarabag",
+  description: "Official website of MecHack Qarabag FRC team",
 };
 
 export default async function RootLayout({

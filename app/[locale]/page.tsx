@@ -14,6 +14,8 @@ import { Separator } from "@/components/ui/separator";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { BrandButton } from "@/components/shared/BrandButton";
 import { FeatureCard } from "@/components/shared/FeatureCard";
+import { Description } from "@radix-ui/react-dialog";
+import { useParams } from "next/navigation";
 
 const BRAND = { cream: "#f5f2e1", navy: "#000080", gold: "#e38d1a" };
 
@@ -54,29 +56,31 @@ export default function Home() {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+  const params = useParams<{ locale: string }>();
+  const locale = params?.locale ?? "en";
 
   return (
     <div className="min-h-screen bg-[var(--color-brand-cream)] text-[var(--color-brand-navy)]">
       {/* Header */}
       <header className={`sticky top-0 z-50 transition-colors ${navSolid ? "bg-[rgba(245,242,225,0.9)] backdrop-blur" : "bg-transparent"}`}>
         <div className="container-max px-6 lg:px-10 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <Link href={`/${locale}`} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="flex items-center gap-3">
             <div className="relative w-10 h-10 rounded-full bg-transparent overflow-hidden grid place-items-center">
               <Image src="/logo/logo.jpg" alt="Logo" fill className="object-contain p-0.5" />
             </div>
-            <span className="font-semibold tracking-wide">Qarabag MecHack</span>
-          </div>
+            <span className="font-semibold tracking-wide">MecHack Qarabag</span>
+          </Link>
           <div className="hidden md:flex items-center gap-6">
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href="#about">About</NavigationMenuLink>
+                  <NavigationMenuLink href={`/${locale}/about`}>About</NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href="#programs">Programs</NavigationMenuLink>
+                  <NavigationMenuLink href={`/${locale}/projects-events`}>Projects & Events</NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href="#news">News</NavigationMenuLink>
+                  <NavigationMenuLink href={`/${locale}/news`}>News</NavigationMenuLink>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
@@ -92,9 +96,9 @@ export default function Home() {
             </SheetTrigger>
             <SheetContent side="right">
               <div className="flex flex-col gap-4 mt-8">
-                <Link href="#about">About</Link>
-                <Link href="#programs">Programs</Link>
-                <Link href="#news">News</Link>
+                <Link href={`/${locale}/about`}>About</Link>
+                <Link href={`/${locale}/projects-events`}>Programs</Link>
+                <Link href={`/${locale}/news`}>News</Link>
                 <select aria-label="Language" className="bg-white border px-3 py-1.5 rounded text-sm w-fit">
                   <option value="en">EN</option>
                   <option value="az">AZ</option>
@@ -106,8 +110,8 @@ export default function Home() {
         </div>
       </header>
 
-            {/* Hero */}
-            <section className="relative h-[92vh] w-full overflow-hidden">
+       {/* Hero */}
+       <section className="relative h-[92vh] w-full overflow-hidden">
         {/* Desktop: Video göster */}
         <video 
           className="absolute inset-0 h-full w-full object-cover hidden md:block" 
@@ -129,7 +133,7 @@ export default function Home() {
               Global robotics and STEM community preparing youth for tomorrow&apos;s challenges
             </motion.h1>
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }} className="mt-6 flex flex-wrap items-center gap-3">
-              <BrandButton asChild><Link href="#about" className="inline-flex items-center gap-2">Learn more <ArrowRight className="w-4 h-4" /></Link></BrandButton>
+              <BrandButton asChild><Link href={`/${locale}/about`} className="inline-flex items-center gap-2">Learn more <ArrowRight className="w-4 h-4" /></Link></BrandButton>
               <Button asChild variant="secondary" className="rounded-full bg-white/90 text-black hover:bg-white"><Link href="#programs">Explore programs</Link></Button>
             </motion.div>
           </div>
@@ -234,20 +238,17 @@ export default function Home() {
               <div className="relative w-11 h-11 rounded-full bg-white border border-[var(--color-brand-gold)] overflow-hidden grid place-items-center">
                 <Image src="/logo/logo.jpg" alt="Logo" fill className="object-contain p-0.5" />
               </div>
-              <span className="font-semibold text-lg">Qarabag MecHack</span>
+              <span className="font-semibold text-lg">MecHack Qarabag</span>
             </div>
             <p className="mt-3 text-sm/6 opacity-85 max-w-xs">
               We are a FIRST Robotics team empowering youth in STEM through robotics, innovation and community projects.
             </p>
             <div className="mt-4 flex items-center gap-3">
-              <Link href="#" aria-label="Instagram" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
+            <Link href="https://www.instagram.com/mechackteam" aria-label="Instagram" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
                 <Instagram className="w-4 h-4" />
               </Link>
               <Link href="#" aria-label="YouTube" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
                 <Youtube className="w-4 h-4" />
-              </Link>
-              <Link href="#" aria-label="GitHub" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
-                <Github className="w-4 h-4" />
               </Link>
             </div>
           </div>
@@ -255,10 +256,9 @@ export default function Home() {
           <div>
             <div className="font-semibold mb-3">Quick Links</div>
             <ul className="space-y-2 text-sm/6 opacity-90">
-              <li><Link href="#about" className="hover:underline">About</Link></li>
-              <li><Link href="#programs" className="hover:underline">Programs</Link></li>
-              <li><Link href="#news" className="hover:underline">News</Link></li>
-              <li><Link href="#" className="hover:underline">Events</Link></li>
+              <li><Link href={`/${locale}/about`} className="hover:underline">About</Link></li>
+              <li><Link href={`/${locale}/projects-events`} className="hover:underline">Projects & Events</Link></li>
+              <li><Link href={`/${locale}/news`} className="hover:underline">News</Link></li>
             </ul>
           </div>
 
@@ -274,20 +274,15 @@ export default function Home() {
           <div>
             <div className="font-semibold mb-3">Contact</div>
             <ul className="space-y-2 text-sm/6 opacity-95">
-              <li className="flex items-start gap-2"><Mail className="w-4 h-4 mt-0.5" /> info@mechack.team</li>
-              <li className="flex items-start gap-2"><Phone className="w-4 h-4 mt-0.5" /> +994 00 000 00 00</li>
-              <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5" /> Baku, Azerbaijan</li>
+            <li className="flex items-start gap-2"><Mail className="w-4 h-4 mt-0.5" /> mechackqarabag@gmail.com</li>
+            <li className="flex items-start gap-2"><Phone className="w-4 h-4 mt-0.5" /> +994 70 595 10 30</li>
+            <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5" /> Baku, Azerbaijan</li>
             </ul>
           </div>
         </div>
         <Separator className="bg-white/10" />
         <div className="container-max px-6 lg:px-10 py-5 text-xs/6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between opacity-80">
-          <div>© {new Date().getFullYear()} Qarabag MecHack. All rights reserved.</div>
-          <div className="flex items-center gap-4">
-            <Link href="#" className="hover:underline">Privacy Policy</Link>
-            <Link href="#" className="hover:underline">Terms</Link>
-            <Link href="#" className="hover:underline">Brand Assets</Link>
-          </div>
+          <div>© {new Date().getFullYear()} MecHack Qarabag. All rights reserved.</div>
         </div>
       </footer>
 

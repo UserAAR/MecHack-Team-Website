@@ -343,3 +343,13 @@ Special thanks to:
     <a href="#news">News</a>
   </p>
 </div>
+
+## Environment variables
+
+Create a `.env.local` in `website/` with:
+
+```
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+```
