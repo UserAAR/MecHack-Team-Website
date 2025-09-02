@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Globe2, Newspaper, Users, Rocket, Sparkles, Menu, Mail, MapPin, Phone, Instagram, Youtube, Github, Calendar } from "lucide-react";
+import { ArrowRight, Globe2, Newspaper, Users, Rocket, Sparkles, Menu, Mail, MapPin, Phone, Instagram, Youtube, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -14,11 +14,20 @@ import { Separator } from "@/components/ui/separator";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { BrandButton } from "@/components/shared/BrandButton";
 import { FeatureCard } from "@/components/shared/FeatureCard";
-import { Description } from "@radix-ui/react-dialog";
 import { useParams } from "next/navigation";
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 
 const BRAND = { cream: "#f5f2e1", navy: "#000080", gold: "#e38d1a" };
+
+type NewsRow = {
+  id: string;
+  title: string;
+  excerpt: string | null;
+  category: string | null;
+  image_url: string | null;
+  published_at: string | null;
+  slug: string | null;
+};
 
 const missions = [
   { icon: <Rocket className="w-6 h-6" />, title: "Robotics", text: "We build competitive robots and resilient minds." },
@@ -71,7 +80,8 @@ export default function Home() {
           .not("published_at", "is", null)
           .order("published_at", { ascending: false })
           .limit(3);
-        const mapped = (data ?? []).map((n: any) => ({
+        const rows = (data ?? []) as NewsRow[];
+        const mapped = rows.map((n) => ({
           id: n.id,
           title: n.title,
           excerpt: n.excerpt ?? "",
