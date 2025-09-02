@@ -8,8 +8,6 @@ import { ArrowRight, Users, Rocket, Sparkles, Mail, MapPin, Phone, Instagram, Yo
 import { Button } from "@/components/ui/button";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { FeatureCard } from "@/components/shared/FeatureCard";

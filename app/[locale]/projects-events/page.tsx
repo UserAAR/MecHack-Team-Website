@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Calendar, MapPin, ArrowRight, Mail, Phone, Instagram, Youtube } from "lucide-react";
+import { Calendar, MapPin, Mail, Phone, Instagram, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -13,6 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { useParams } from "next/navigation";
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
+import { MobileNav } from "@/components/shared/MobileNav";
 
 const BRAND = { cream: "#f5f2e1", navy: "#000080", gold: "#e38d1a" };
 
@@ -114,16 +115,7 @@ export default function ProjectsEventsPage() {
               <Button variant="outline" size="icon" className="md:hidden">☰</Button>
             </SheetTrigger>
             <SheetContent side="right">
-              <div className="flex flex-col gap-4 mt-8">
-                <Link href={`/${locale}/about`}>About</Link>
-                <Link href={`/${locale}/projects-events`}>Projects & Events</Link>
-                <Link href={`/${locale}/news`}>News</Link>
-                <select aria-label="Language" className="bg-white border px-3 py-1.5 rounded text-sm w-fit">
-                  <option value="en">EN</option>
-                  <option value="az">AZ</option>
-                  <option value="ru">RU</option>
-                </select>
-              </div>
+              <MobileNav locale={locale} />
             </SheetContent>
           </Sheet>
         </div>
@@ -146,17 +138,17 @@ export default function ProjectsEventsPage() {
         <div className="container-max px-6 lg:px-10">
           <SectionHeader eyebrow="What we build" title="Featured Projects" />
           <div className="grid gap-6 md:grid-cols-3">
-            {(rows.length ? rows : projectsFallback).map((p) => (
-              <Card key={(p as any).id} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-shadow">
+            {(rows.length ? rows : projectsFallback as unknown as ProjectRow[]).map((p: ProjectRow) => (
+              <Card key={p.id} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-shadow">
                 <div className="relative h-48">
-                  <Image src={(p as any).image || (p as any).image_url || "/news/thumb.jpg"} alt={(p as any).title} fill className="object-cover" />
+                  <Image src={(p as ProjectRow).image_url ?? "/news/thumb.jpg"} alt={p.title} fill className="object-cover" />
                 </div>
                 <CardHeader className="pb-0">
-                  <CardTitle className="text-xl">{(p as any).title}</CardTitle>
+                  <CardTitle className="text-xl">{p.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="pt-2">
-                  <p className="text-sm text-neutral-700">{(p as any).summary ?? ""}</p>
-                  <Button asChild variant="link" className="px-0 text-[var(--color-brand-gold)]"><Link href={`/${locale}/projects-events/${(p as any).slug ?? (p as any).id}`}>Read more</Link></Button>
+                  <p className="text-sm text-neutral-700">{p.summary ?? ""}</p>
+                  <Button asChild variant="link" className="px-0 text-[var(--color-brand-gold)]"><Link href={`/${locale}/projects-events/${p.slug ?? p.id}`}>Read more</Link></Button>
                 </CardContent>
               </Card>
             ))}

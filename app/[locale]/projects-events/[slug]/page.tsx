@@ -8,6 +8,16 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu, Instagram, Youtube, Mail, MapPin, Phone, ArrowLeft } from "lucide-react";
 
+type ProjectRow = {
+  id: string;
+  title: string;
+  summary: string | null;
+  content: string | null;
+  image_url: string | null;
+  slug: string | null;
+  published_at: string | null;
+};
+
 export default async function ProjectDetail({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
   const supabase = await getSupabaseServerClient();
@@ -16,15 +26,15 @@ export default async function ProjectDetail({ params }: { params: Promise<{ loca
     .from("projects")
     .select(fields)
     .eq("slug", slug)
-    .maybeSingle();
+    .maybeSingle<ProjectRow>();
   if ((!data || error) && !slug.includes("-")) {
     const byId = await supabase
       .from("projects")
       .select(fields)
       .eq("id", slug)
-      .maybeSingle();
-    data = byId.data as any;
-    error = byId.error as any;
+      .maybeSingle<ProjectRow>();
+    data = byId.data ?? null;
+    error = byId.error ?? null as any;
   }
   if (error || !data || !data.published_at) return notFound();
 

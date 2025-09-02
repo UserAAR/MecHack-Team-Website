@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { MobileNav } from "@/components/shared/MobileNav";
 
 const BRAND = { cream: "#f5f2e1", navy: "#000080", gold: "#e38d1a" };
 
@@ -92,16 +93,7 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
               <Button variant="outline" size="icon" className="md:hidden"><Menu className="w-5 h-5" /></Button>
             </SheetTrigger>
             <SheetContent side="right">
-              <div className="flex flex-col gap-4 mt-8">
-                <Link href={`/${locale}/about`}>About</Link>
-                <Link href={`/${locale}/projects-events`}>Programs</Link>
-                <Link href={`/${locale}/news`}>News</Link>
-                <select aria-label="Language" className="bg-white border px-3 py-1.5 rounded text-sm w-fit">
-                  <option value="en">EN</option>
-                  <option value="az">AZ</option>
-                  <option value="ru">RU</option>
-                </select>
-              </div>
+              <MobileNav locale={locale} />
             </SheetContent>
           </Sheet>
         </div>
