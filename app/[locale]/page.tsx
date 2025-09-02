@@ -16,6 +16,7 @@ import { BrandButton } from "@/components/shared/BrandButton";
 import { FeatureCard } from "@/components/shared/FeatureCard";
 import { Description } from "@radix-ui/react-dialog";
 import { useParams } from "next/navigation";
+import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 
 const BRAND = { cream: "#f5f2e1", navy: "#000080", gold: "#e38d1a" };
 
@@ -34,7 +35,7 @@ const programs = [
   { key: "frc", title: "FIRST Robotics Competition", age: "Grades 9–12", color: "#0288d1", link: "https://www.firstinspires.org/robotics/frc", tag: "FRC", description: "FIRST® Robotics Competition teams design, program, and build a robot starting with a standard kit of parts and common set of rules to play in a themed head-to-head challenge. Teams also build a brand, develop community partnerships for support, and work to promote STEM in their local community." },
 ];
 
-const newsItems = [
+const newsFallback = [
   { id: 1, title: "MecHack wins regional Innovation in Control Award", excerpt: "Our control system impressed the judges with robust autonomous routines and clean wiring.", category: "Competition", date: "2025-03-02", image: "/news/1680441839.jpeg", link: "#" },
   { id: 2, title: "Community workshop: Intro to robotics and coding", excerpt: "We hosted 70+ students for hands-on sessions with sensors, pneumatics and Java basics.", category: "Outreach", date: "2025-02-18", image: "/news/b16e43cbd0e2ef4398f3b52a91934c4e.jpeg", link: "#" },
   { id: 3, title: "New season kickoff: strategy and prototyping day", excerpt: "The team explored rules, mapped objectives and built fast prototypes for key mechanisms.", category: "Update", date: "2025-01-10", image: "/news/thumb.jpg", link: "#" },
@@ -50,6 +51,7 @@ const sponsors = [
 
 export default function Home() {
   const [navSolid, setNavSolid] = useState(false);
+  const [latestNews, setLatestNews] = useState<Array<{ id: string; title: string; excerpt: string; category: string; date: string; image: string; link: string }>>([]);
   useEffect(() => {
     const onScroll = () => setNavSolid(window.scrollY > 10);
     onScroll();
@@ -58,6 +60,32 @@ export default function Home() {
   }, []);
   const params = useParams<{ locale: string }>();
   const locale = params?.locale ?? "en";
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const supabase = getSupabaseBrowserClient();
+        const { data } = await supabase
+          .from("news")
+          .select("id, title, excerpt, category, image_url, published_at, slug")
+          .not("published_at", "is", null)
+          .order("published_at", { ascending: false })
+          .limit(3);
+        const mapped = (data ?? []).map((n: any) => ({
+          id: n.id,
+          title: n.title,
+          excerpt: n.excerpt ?? "",
+          category: n.category ?? "Update",
+          date: n.published_at ?? new Date().toISOString(),
+          image: n.image_url ?? "/news/thumb.jpg",
+          link: `/${locale}/news/${n.slug ?? n.id}`,
+        }));
+        setLatestNews(mapped);
+      } catch {
+        setLatestNews([]);
+      }
+    })();
+  }, [locale]);
 
   return (
     <div className="min-h-screen bg-[var(--color-brand-cream)] text-[var(--color-brand-navy)]">
@@ -183,7 +211,7 @@ export default function Home() {
         <div className="container-max px-6 lg:px-10">
           <SectionHeader eyebrow="Updates" title="Latest News" />
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {newsItems.map((n, idx) => (
+            {(latestNews.length ? latestNews : newsFallback).map((n, idx) => (
               <motion.div key={n.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: idx * 0.05 }}>
                 <Card className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-shadow group">
                   <div className="relative h-56">

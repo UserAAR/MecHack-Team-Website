@@ -6,15 +6,15 @@ import { Separator } from "@/components/ui/separator";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu, Instagram, Youtube, Mail, MapPin, Phone, ArrowLeft } from "lucide-react";
+import { Menu, Instagram, Youtube, Mail, MapPin, Phone, ArrowLeft, Calendar, MapPin as Pin } from "lucide-react";
 
-export default async function NewsDetail({ params }: { params: Promise<{ locale: string; slug: string }> }) {
-  const { locale, slug } = await params;
+export default async function EventDetail({ params }: { params: Promise<{ locale: string; id: string }> }) {
+  const { locale, id } = await params;
   const supabase = await getSupabaseServerClient();
   const { data, error } = await supabase
-    .from("news")
-    .select("id, title, excerpt, content, category, image_url, published_at, slug")
-    .eq("slug", slug)
+    .from("events")
+    .select("id, title, description, location, event_date, image_url, published_at")
+    .eq("id", id)
     .maybeSingle();
   if (error || !data || !data.published_at) return notFound();
 
@@ -73,36 +73,31 @@ export default async function NewsDetail({ params }: { params: Promise<{ locale:
         <div className="container-max px-6 lg:px-10 py-10">
           <div className="mb-6">
             <Button asChild className="rounded-full bg-[var(--color-brand-gold)] text-black hover:bg-[var(--color-brand-gold)]/90">
-              <Link href={`/${locale}/news`} className="inline-flex items-center gap-2"><ArrowLeft className="w-4 h-4" /> Back to News</Link>
+              <Link href={`/${locale}/projects-events`} className="inline-flex items-center gap-2"><ArrowLeft className="w-4 h-4" /> Back to Projects & Events</Link>
             </Button>
           </div>
           <h1 className="text-3xl md:text-5xl font-extrabold">{data.title}</h1>
-          <div className="mt-2 text-sm text-neutral-600 flex items-center gap-4">
-            <span>{new Date(data.published_at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "2-digit" })}</span>
-            {data.category ? <span className="inline-flex items-center rounded-full bg-black/5 px-2.5 py-0.5 text-xs font-medium">{data.category}</span> : null}
-          </div>
 
-          <div className="mt-8 grid gap-6 md:grid-cols-12">
+          <div className="mt-8 grid gap-6 md:grid-cols-12 items-start">
             <div className="relative md:col-span-5 lg:col-span-6 rounded-xl overflow-hidden ring-1 ring-black/5 bg-black min-h-64">
               <Image src={data.image_url ?? "/news/thumb.jpg"} alt={data.title} fill className="object-cover opacity-95" />
               <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,.25),rgba(0,0,0,0))]" />
             </div>
             <div className="md:col-span-7 lg:col-span-6">
-              {data.excerpt ? (
-                <p className="text-base md:text-lg text-neutral-800">{data.excerpt}</p>
+              <div className="flex items-center gap-3 text-sm text-neutral-700">
+                <Calendar className="w-4 h-4" />
+                <span>{new Date(data.event_date ?? data.published_at ?? new Date().toISOString()).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "2-digit" })}</span>
+                <Pin className="w-4 h-4" />
+                <span>{data.location}</span>
+              </div>
+              {data.description ? (
+                <p className="mt-3 text-base md:text-lg text-neutral-800">{data.description}</p>
               ) : null}
             </div>
           </div>
 
           <Separator className="my-8" />
-
-          <div className="prose max-w-none prose-p:my-4 prose-headings:mt-8 prose-img:rounded-xl">
-            {data.content ? (
-              <div dangerouslySetInnerHTML={{ __html: data.content }} />
-            ) : (
-              <p>Content coming soon.</p>
-            )}
-          </div>
+          <p className="text-neutral-700">More details will be announced soon.</p>
         </div>
       </article>
 

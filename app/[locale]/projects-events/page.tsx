@@ -27,11 +27,20 @@ type ProjectRow = {
   published_at: string | null;
 };
 
-type EventItem = { id: string; date: string; title: string; location: string; description: string };
+type EventRow = {
+  id: string;
+  title: string;
+  description: string | null;
+  location: string | null;
+  event_date: string | null;
+  image_url: string | null;
+  published_at: string | null;
+};
 
 export default function ProjectsEventsPage() {
   const [navSolid, setNavSolid] = useState(false);
   const [rows, setRows] = useState<ProjectRow[]>([]);
+  const [eventRows, setEventRows] = useState<EventRow[]>([]);
   useEffect(() => {
     const onScroll = () => setNavSolid(window.scrollY > 10);
     onScroll();
@@ -46,15 +55,25 @@ export default function ProjectsEventsPage() {
     (async () => {
       try {
         const supabase = getSupabaseBrowserClient();
-        const { data } = await supabase
-          .from("projects")
-          .select("id, title, summary, image_url, slug, published_at")
-          .not("published_at", "is", null)
-          .order("published_at", { ascending: false })
-          .limit(24);
-        setRows((data as ProjectRow[]) ?? []);
+        const [{ data: proj }, { data: evs }] = await Promise.all([
+          supabase
+            .from("projects")
+            .select("id, title, summary, image_url, slug, published_at")
+            .not("published_at", "is", null)
+            .order("published_at", { ascending: false })
+            .limit(24),
+          supabase
+            .from("events")
+            .select("id, title, description, location, event_date, image_url, published_at")
+            .not("published_at", "is", null)
+            .order("event_date", { ascending: true })
+            .limit(24),
+        ]);
+        setRows((proj as ProjectRow[]) ?? []);
+        setEventRows((evs as EventRow[]) ?? []);
       } catch {
         setRows([]);
+        setEventRows([]);
       }
     })();
   }, []);
@@ -119,11 +138,6 @@ export default function ProjectsEventsPage() {
           <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.05 }} className="mt-4 max-w-3xl text-lg text-neutral-700">
             Discover our ongoing engineering projects and upcoming community events.
           </motion.p>
-          <div className="mt-6">
-            <Button asChild className="rounded-full bg-[var(--color-brand-navy)] text-[var(--color-brand-cream)] hover:bg-[var(--color-brand-navy)]/90">
-              <Link href={`/${locale}#news`} className="inline-flex items-center gap-2">See latest news <ArrowRight className="w-4 h-4" /></Link>
-            </Button>
-          </div>
         </div>
       </section>
 
@@ -155,12 +169,12 @@ export default function ProjectsEventsPage() {
         <div className="container-max px-6 lg:px-10">
           <SectionHeader eyebrow="Get involved" title="Upcoming Events" />
           <div className="grid gap-6">
-            {events.map((e: EventItem) => (
+            {eventRows.map((e) => (
               <div key={e.id} className="rounded-xl border border-black/5 bg-[var(--color-brand-cream)] p-5 flex flex-col md:flex-row md:items-center md:justify-between">
                 <div className="flex items-start gap-4">
                   <div className="shrink-0 rounded-lg bg-white px-3 py-2 text-sm font-semibold flex items-center gap-2 ring-1 ring-black/5">
                     <Calendar className="w-4 h-4" />
-                    <span>{new Date(e.date).toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" })}</span>
+                    <span>{new Date(e.event_date ?? e.published_at ?? new Date().toISOString()).toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" })}</span>
                   </div>
                   <div>
                     <div className="font-semibold text-lg">{e.title}</div>
@@ -175,6 +189,9 @@ export default function ProjectsEventsPage() {
                 </div>
               </div>
             ))}
+            {eventRows.length === 0 && (
+              <div className="text-sm text-neutral-600">No upcoming events.</div>
+            )}
           </div>
         </div>
       </section>
