@@ -87,3 +87,11 @@ create policy if not exists "projects admin write" on public.projects for all
 
 -- Storage bucket (create via dashboard): 'media'
 -- Make it public for read; restrict insert/update/delete via policies to admins. 
+
+-- Add slug to projects if missing
+alter table public.projects
+  add column if not exists slug text unique;
+
+-- Indexes for detail pages
+create index if not exists idx_news_slug on public.news((lower(slug)));
+create index if not exists idx_projects_slug on public.projects((lower(slug))); 

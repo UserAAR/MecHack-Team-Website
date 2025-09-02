@@ -12,31 +12,52 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { useParams } from "next/navigation";
+import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 
 const BRAND = { cream: "#f5f2e1", navy: "#000080", gold: "#e38d1a" };
 
-const projects = [
-  { id: "p1", title: "Autonomous Navigation", image: "/news/thumb.jpg", summary: "Vision-based path following and obstacle avoidance.", link: "#" },
-  { id: "p2", title: "Arm & Intake System", image: "/news/1680441839.jpeg", summary: "High-speed intake with closed-loop arm control.", link: "#" },
-  { id: "p3", title: "Drivebase Optimization", image: "/news/b16e43cbd0e2ef4398f3b52a91934c4e.jpeg", summary: "Lightweight frame, traction tuning, and code profiling.", link: "#" },
-];
+const projectsFallback: Array<{ id: string; title: string; summary?: string; image?: string; slug?: string; }> = [];
 
-const events = [
-  { id: "e1", date: "2025-10-12", title: "Community Robotics Workshop", location: "Baku Makerspace", description: "Hands-on intro to sensors, wiring and safe prototyping." },
-  { id: "e2", date: "2025-11-01", title: "Season Kickoff Meetup", location: "Team Lab", description: "Game analysis, strategy, and rapid prototyping sprints." },
-  { id: "e3", date: "2025-12-05", title: "Outreach Talk: STEM Careers", location: "Local High School", description: "Pathways in engineering with demos from our robot." },
-];
+type ProjectRow = {
+  id: string;
+  title: string;
+  summary: string | null;
+  image_url: string | null;
+  slug: string | null;
+  published_at: string | null;
+};
+
+type EventItem = { id: string; date: string; title: string; location: string; description: string };
 
 export default function ProjectsEventsPage() {
   const [navSolid, setNavSolid] = useState(false);
+  const [rows, setRows] = useState<ProjectRow[]>([]);
   useEffect(() => {
     const onScroll = () => setNavSolid(window.scrollY > 10);
     onScroll();
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
   const params = useParams<{ locale: string }>();
   const locale = params?.locale ?? "en";
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const supabase = getSupabaseBrowserClient();
+        const { data } = await supabase
+          .from("projects")
+          .select("id, title, summary, image_url, slug, published_at")
+          .not("published_at", "is", null)
+          .order("published_at", { ascending: false })
+          .limit(24);
+        setRows((data as ProjectRow[]) ?? []);
+      } catch {
+        setRows([]);
+      }
+    })();
+  }, []);
 
   return (
     <div className="min-h-screen bg-[var(--color-brand-cream)] text-[var(--color-brand-navy)]">
@@ -111,17 +132,17 @@ export default function ProjectsEventsPage() {
         <div className="container-max px-6 lg:px-10">
           <SectionHeader eyebrow="What we build" title="Featured Projects" />
           <div className="grid gap-6 md:grid-cols-3">
-            {projects.map((p) => (
-              <Card key={p.id} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-shadow">
+            {(rows.length ? rows : projectsFallback).map((p) => (
+              <Card key={(p as any).id} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-shadow">
                 <div className="relative h-48">
-                  <Image src={p.image} alt={p.title} fill className="object-cover" />
+                  <Image src={(p as any).image || (p as any).image_url || "/news/thumb.jpg"} alt={(p as any).title} fill className="object-cover" />
                 </div>
                 <CardHeader className="pb-0">
-                  <CardTitle className="text-xl">{p.title}</CardTitle>
+                  <CardTitle className="text-xl">{(p as any).title}</CardTitle>
                 </CardHeader>
                 <CardContent className="pt-2">
-                  <p className="text-sm text-neutral-700">{p.summary}</p>
-                  <Button asChild variant="link" className="px-0 text-[var(--color-brand-gold)]"><Link href={p.link}>Read more</Link></Button>
+                  <p className="text-sm text-neutral-700">{(p as any).summary ?? ""}</p>
+                  <Button asChild variant="link" className="px-0 text-[var(--color-brand-gold)]"><Link href={`/${locale}/projects-events/${(p as any).slug ?? (p as any).id}`}>Read more</Link></Button>
                 </CardContent>
               </Card>
             ))}
@@ -134,7 +155,7 @@ export default function ProjectsEventsPage() {
         <div className="container-max px-6 lg:px-10">
           <SectionHeader eyebrow="Get involved" title="Upcoming Events" />
           <div className="grid gap-6">
-            {events.map((e) => (
+            {events.map((e: EventItem) => (
               <div key={e.id} className="rounded-xl border border-black/5 bg-[var(--color-brand-cream)] p-5 flex flex-col md:flex-row md:items-center md:justify-between">
                 <div className="flex items-start gap-4">
                   <div className="shrink-0 rounded-lg bg-white px-3 py-2 text-sm font-semibold flex items-center gap-2 ring-1 ring-black/5">
