@@ -7,6 +7,7 @@ import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuL
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu, Instagram, Youtube, Mail, MapPin, Phone, ArrowLeft } from "lucide-react";
+import type { PostgrestError } from "@supabase/supabase-js";
 
 type ProjectRow = {
   id: string;
@@ -22,7 +23,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ loca
   const { locale, slug } = await params;
   const supabase = await getSupabaseServerClient();
   const fields = "id, title, summary, content, image_url, slug, published_at";
-  let { data, error } = await supabase
+  let { data, error }: { data: ProjectRow | null; error: PostgrestError | null } = await supabase
     .from("projects")
     .select(fields)
     .eq("slug", slug)
@@ -34,7 +35,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ loca
       .eq("id", slug)
       .maybeSingle<ProjectRow>();
     data = byId.data ?? null;
-    error = byId.error ?? null as any;
+    error = byId.error ?? null;
   }
   if (error || !data || !data.published_at) return notFound();
 
