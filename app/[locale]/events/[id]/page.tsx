@@ -8,9 +8,13 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu, Instagram, Youtube, Mail, MapPin, Phone, ArrowLeft, Calendar, MapPin as Pin } from "lucide-react";
 import { MobileNav } from "@/components/shared/MobileNav";
+import { getTranslations } from "next-intl/server";
 
 export default async function EventDetail({ params }: { params: Promise<{ locale: string; id: string }> }) {
   const { locale, id } = await params;
+  const tHeader = await getTranslations({ locale, namespace: "Header" });
+  const tFooter = await getTranslations({ locale, namespace: "Footer" });
+  const tPE = await getTranslations({ locale, namespace: "ProjectsEvents" });
   const supabase = await getSupabaseServerClient();
   const { data, error } = await supabase
     .from("events")
@@ -34,13 +38,13 @@ export default async function EventDetail({ params }: { params: Promise<{ locale
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/about`}>About</NavigationMenuLink>
+                  <NavigationMenuLink href={`/${locale}/about`}>{tHeader("about")}</NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/projects-events`}>Projects & Events</NavigationMenuLink>
+                  <NavigationMenuLink href={`/${locale}/projects-events`}>{tHeader("projectsEvents")}</NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/news`}>News</NavigationMenuLink>
+                  <NavigationMenuLink href={`/${locale}/news`}>{tHeader("news")}</NavigationMenuLink>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
@@ -65,7 +69,7 @@ export default async function EventDetail({ params }: { params: Promise<{ locale
         <div className="container-max px-6 lg:px-10 py-10">
           <div className="mb-6">
             <Button asChild className="rounded-full bg-[var(--color-brand-gold)] text-black hover:bg-[var(--color-brand-gold)]/90">
-              <Link href={`/${locale}/projects-events`} className="inline-flex items-center gap-2"><ArrowLeft className="w-4 h-4" /> Back to Projects & Events</Link>
+              <Link href={`/${locale}/projects-events`} className="inline-flex items-center gap-2"><ArrowLeft className="w-4 h-4" /> {tPE("heroTitle")}</Link>
             </Button>
           </div>
           <h1 className="text-3xl md:text-5xl font-extrabold">{data.title}</h1>
@@ -78,7 +82,7 @@ export default async function EventDetail({ params }: { params: Promise<{ locale
             <div className="md:col-span-7 lg:col-span-6">
               <div className="flex items-center gap-3 text-sm text-neutral-700">
                 <Calendar className="w-4 h-4" />
-                <span>{new Date(data.event_date ?? data.published_at ?? new Date().toISOString()).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "2-digit" })}</span>
+                <span>{new Date(data.event_date ?? data.published_at ?? new Date().toISOString()).toLocaleDateString(locale, { year: "numeric", month: "long", day: "2-digit" })}</span>
                 <Pin className="w-4 h-4" />
                 <span>{data.location}</span>
               </div>
@@ -89,7 +93,7 @@ export default async function EventDetail({ params }: { params: Promise<{ locale
           </div>
 
           <Separator className="my-8" />
-          <p className="text-neutral-700">More details will be announced soon.</p>
+          <p className="text-neutral-700">{tPE("moreDetailsComing", { default: "" }) || ""}</p>
         </div>
       </article>
 
@@ -105,10 +109,10 @@ export default async function EventDetail({ params }: { params: Promise<{ locale
               <span className="font-semibold text-lg">MecHack Qarabag</span>
             </div>
             <p className="mt-3 text-sm/6 opacity-85 max-w-xs">
-              We are a FIRST Robotics team empowering youth in STEM through robotics, innovation and community projects.
+              {tFooter("tagline")}
             </p>
             <div className="mt-4 flex items-center gap-3">
-              <Link href="https://www.instagram.com/mechackteam" aria-label="Instagram" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
+              <Link href="#" aria-label="Instagram" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
                 <Instagram className="w-4 h-4" />
               </Link>
               <Link href="#" aria-label="YouTube" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
@@ -118,16 +122,16 @@ export default async function EventDetail({ params }: { params: Promise<{ locale
           </div>
 
           <div>
-            <div className="font-semibold mb-3">Quick Links</div>
+            <div className="font-semibold mb-3">{tFooter("quickLinks")}</div>
             <ul className="space-y-2 text-sm/6 opacity-90">
-              <li><Link href={`/${locale}/about`} className="hover:underline">About</Link></li>
-              <li><Link href={`/${locale}/projects-events`} className="hover:underline">Projects & Events</Link></li>
-              <li><Link href={`/${locale}/news`} className="hover:underline">News</Link></li>
+              <li><Link href={`/${locale}/about`} className="hover:underline">{tHeader("about")}</Link></li>
+              <li><Link href={`/${locale}/projects-events`} className="hover:underline">{tHeader("projectsEvents")}</Link></li>
+              <li><Link href={`/${locale}/news`} className="hover:underline">{tHeader("news")}</Link></li>
             </ul>
           </div>
 
           <div>
-            <div className="font-semibold mb-3">Programs</div>
+            <div className="font-semibold mb-3">{tFooter("programs")}</div>
             <ul className="space-y-2 text-sm/6 opacity-90">
               <li><Link href="https://www.firstlegoleague.org/" target="_blank" className="hover:underline">FIRST LEGO League</Link></li>
               <li><Link href="https://www.firstinspires.org/robotics/ftc" target="_blank" className="hover:underline">FIRST Tech Challenge</Link></li>
@@ -136,7 +140,7 @@ export default async function EventDetail({ params }: { params: Promise<{ locale
           </div>
 
           <div>
-            <div className="font-semibold mb-3">Contact</div>
+            <div className="font-semibold mb-3">{tFooter("contact")}</div>
             <ul className="space-y-2 text-sm/6 opacity-95">
               <li className="flex items-start gap-2"><Mail className="w-4 h-4 mt-0.5" /> mechackqarabag@gmail.com</li>
               <li className="flex items-start gap-2"><Phone className="w-4 h-4 mt-0.5" /> +994 70 595 10 30</li>
@@ -146,7 +150,7 @@ export default async function EventDetail({ params }: { params: Promise<{ locale
         </div>
         <Separator className="bg-white/10" />
         <div className="container-max px-6 lg:px-10 py-5 text-xs/6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between opacity-80">
-          <div>© {new Date().getFullYear()} MecHack Qarabag. All rights reserved.</div>
+          <div>© {new Date().getFullYear()} MecHack Qarabag. {tFooter("copyright")}</div>
         </div>
       </footer>
     </div>

@@ -1,12 +1,8 @@
 import { setRequestLocale } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
-import { Geist, Geist_Mono } from "next/font/google";
 
-const locales = ["en", "az", "ru"] as const;
-
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+const locales = ["en", "az"] as const;
 
 export default async function LocaleLayout({
   children,
@@ -19,11 +15,7 @@ export default async function LocaleLayout({
   if (!locales.includes(locale as (typeof locales)[number])) notFound();
   setRequestLocale(locale);
 
-  return (
-    <html lang={locale}>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
-      </body>
-    </html>
-  );
+  const messages = (await import(`../../messages/${locale}.json`)).default;
+
+  return <NextIntlClientProvider locale={locale} messages={messages}>{children}</NextIntlClientProvider>;
 } 

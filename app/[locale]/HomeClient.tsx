@@ -15,27 +15,13 @@ import { SectionHeader } from "@/components/shared/SectionHeader";
 import { BrandButton } from "@/components/shared/BrandButton";
 import { FeatureCard } from "@/components/shared/FeatureCard";
 import { MobileNav } from "@/components/shared/MobileNav";
+import { useTranslations } from "next-intl";
 
 export type LatestNewsItem = { id: string; title: string; excerpt: string; category: string; date: string; image: string; link: string };
 
 type Props = { locale: string; latestNews: LatestNewsItem[] };
 
 const BRAND = { cream: "#f5f2e1", navy: "#000080", gold: "#e38d1a" } as const;
-
-const missions = [
-  { icon: <Rocket className="w-6 h-6" />, title: "Robotics", text: "We build competitive robots and resilient minds." },
-  { icon: <Users className="w-6 h-6" />, title: "Teamwork", text: "We coach collaboration, leadership and fair play." },
-  { icon: <Globe2 className="w-6 h-6" />, title: "Community", text: "We inspire youth to serve and impact our community." },
-  { icon: <Sparkles className="w-6 h-6" />, title: "Innovation", text: "We iterate fast and celebrate creative engineering." },
-  { icon: <Newspaper className="w-6 h-6" />, title: "Outreach", text: "We share knowledge via events, talks and media." },
-  { icon: <ArrowRight className="w-6 h-6" />, title: "Future", text: "We prepare youth for tomorrow’s challenges." },
-];
-
-const programs = [
-  { key: "fll", title: "FIRST LEGO League", age: "Ages 4–14", color: "#d32f2f", link: "https://www.firstlegoleague.org/", tag: "FLL", description: "FIRST® LEGO® League introduces STEM to children ages 4-14 through fun, exciting hands-on learning. Participants gain real-world problem-solving experiences through a guided, global robotics program, helping today’s students and teachers build a better future together. The three divisions inspire youth to experiment and grow their critical thinking, coding, and design skills through hands-on STEM learning and robotics."},
-  { key: "ftc", title: "FIRST Tech Challenge", age: "Ages 12–18", color: "#ef6c00", link: "https://www.firstinspires.org/robotics/ftc", tag: "FTC", description: "FIRST® Tech Challenge students learn to think like engineers. Teams design, build, and program robots to compete in an alliance format against other teams. Robots are built from a reusable platform, powered by android technology, and can be coded using a variety of levels of Java-based programming." },
-  { key: "frc", title: "FIRST Robotics Competition", age: "Grades 9–12", color: "#0288d1", link: "https://www.firstinspires.org/robotics/frc", tag: "FRC", description: "FIRST® Robotics Competition teams design, program, and build a robot starting with a standard kit of parts and common set of rules to play in a themed head-to-head challenge. Teams also build a brand, develop community partnerships for support, and work to promote STEM in their local community." },
-];
 
 const sponsors = [
   { id: 1, logo: "/sponsors/BMU-logo.svg.png" },
@@ -46,6 +32,14 @@ const sponsors = [
 ];
 
 export default function HomeClient({ locale, latestNews }: Props) {
+  const tHeader = useTranslations("Header");
+  const tHero = useTranslations("Hero");
+  const tMission = useTranslations("Mission");
+  const tPrograms = useTranslations("Programs");
+  const tNews = useTranslations("News");
+  const tSponsors = useTranslations("Sponsors");
+  const tFooter = useTranslations("Footer");
+  const tCommon = useTranslations("Common");
   const [navSolid, setNavSolid] = useState(false);
   useEffect(() => {
     const onScroll = () => setNavSolid(window.scrollY > 10);
@@ -53,6 +47,21 @@ export default function HomeClient({ locale, latestNews }: Props) {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const missions = [
+    { icon: <Rocket className="w-6 h-6" />, title: tMission("items.robotics.title"), text: tMission("items.robotics.text") },
+    { icon: <Users className="w-6 h-6" />, title: tMission("items.teamwork.title"), text: tMission("items.teamwork.text") },
+    { icon: <Globe2 className="w-6 h-6" />, title: tMission("items.community.title"), text: tMission("items.community.text") },
+    { icon: <Sparkles className="w-6 h-6" />, title: tMission("items.innovation.title"), text: tMission("items.innovation.text") },
+    { icon: <Newspaper className="w-6 h-6" />, title: tMission("items.outreach.title"), text: tMission("items.outreach.text") },
+    { icon: <ArrowRight className="w-6 h-6" />, title: tMission("items.future.title"), text: tMission("items.future.text") },
+  ];
+
+  const programs = [
+    { key: "fll", title: tPrograms("items.fll.title"), age: tPrograms("items.fll.age"), color: "#d32f2f", link: "https://www.firstlegoleague.org/", tag: "FLL", description: tPrograms("items.fll.description") },
+    { key: "ftc", title: tPrograms("items.ftc.title"), age: tPrograms("items.ftc.age"), color: "#ef6c00", link: "https://www.firstinspires.org/robotics/ftc", tag: "FTC", description: tPrograms("items.ftc.description") },
+    { key: "frc", title: tPrograms("items.frc.title"), age: tPrograms("items.frc.age"), color: "#0288d1", link: "https://www.firstinspires.org/robotics/frc", tag: "FRC", description: tPrograms("items.frc.description") },
+  ];
 
   return (
     <div className="min-h-screen bg-[var(--color-brand-cream)] text-[var(--color-brand-navy)]">
@@ -69,21 +78,20 @@ export default function HomeClient({ locale, latestNews }: Props) {
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/about`}>About</NavigationMenuLink>
+                  <NavigationMenuLink href={`/${locale}/about`}>{tHeader("about")}</NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/projects-events`}>Projects & Events</NavigationMenuLink>
+                  <NavigationMenuLink href={`/${locale}/projects-events`}>{tHeader("projectsEvents")}</NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/news`}>News</NavigationMenuLink>
+                  <NavigationMenuLink href={`/${locale}/news`}>{tHeader("news")}</NavigationMenuLink>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
-            <select aria-label="Language" className="bg-white/80 border px-3 py-1.5 rounded-full text-sm">
-              <option value="en">EN</option>
-              <option value="az">AZ</option>
-              <option value="ru">RU</option>
-            </select>
+            <div className="inline-flex items-center gap-1 bg-white/80 border px-1.5 py-1 rounded-full text-sm">
+              <Link href={`/en`} className={`px-2 py-0.5 rounded-full ${locale === "en" ? "bg-black text-white" : "hover:bg-black/10"}`}>EN</Link>
+              <Link href={`/az`} className={`px-2 py-0.5 rounded-full ${locale === "az" ? "bg-black text-white" : "hover:bg-black/10"}`}>AZ</Link>
+            </div>
           </div>
           <Sheet>
             <SheetTrigger asChild>
@@ -105,11 +113,11 @@ export default function HomeClient({ locale, latestNews }: Props) {
         <div className="relative z-10 h-full w-full flex items-center">
           <div className="container-max px-6 lg:px-10">
             <motion.h1 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="max-w-5xl text-5xl md:text-7xl font-extrabold leading-tight text-[var(--color-brand-cream)]">
-              Global robotics and STEM community preparing youth for tomorrow's challenges
+              {tHero("title")}
             </motion.h1>
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }} className="mt-6 flex flex-wrap items-center gap-3">
-              <BrandButton asChild><Link href={`/${locale}/about`} className="inline-flex items-center gap-2">Learn more <ArrowRight className="w-4 h-4" /></Link></BrandButton>
-              <Button asChild variant="secondary" className="rounded-full bg-white/90 text-black hover:bg-white"><Link href="#programs">Explore programs</Link></Button>
+              <BrandButton asChild><Link href={`/${locale}/about`} className="inline-flex items-center gap-2">{tHero("ctaLearnMore")} <ArrowRight className="w-4 h-4" /></Link></BrandButton>
+              <Button asChild variant="secondary" className="rounded-full bg-white/90 text-black hover:bg-white"><Link href="#programs">{tHero("ctaExplorePrograms")}</Link></Button>
             </motion.div>
           </div>
         </div>
@@ -118,7 +126,7 @@ export default function HomeClient({ locale, latestNews }: Props) {
       {/* Mission */}
       <section id="about" className="section-padding">
         <div className="container-max px-6 lg:px-10">
-          <SectionHeader eyebrow="Who we are" title="Our Mission" />
+          <SectionHeader eyebrow={tMission("eyebrow")} title={tMission("title")} />
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {missions.map((m, idx) => (
               <FeatureCard key={idx} icon={m.icon} title={m.title} text={m.text} />
@@ -130,7 +138,7 @@ export default function HomeClient({ locale, latestNews }: Props) {
       {/* Programs */}
       <section id="programs" className="section-padding bg-white">
         <div className="container-max px-6 lg:px-10">
-          <SectionHeader eyebrow="What we do" title="Programs" />
+          <SectionHeader eyebrow={tPrograms("eyebrow")} title={tPrograms("title")} />
           <div className="grid gap-6 md:grid-cols-3">
             {programs.map((p) => (
               <motion.div key={p.key} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
@@ -144,7 +152,7 @@ export default function HomeClient({ locale, latestNews }: Props) {
                   </CardHeader>
                   <CardContent>
                     <p className="text-[15px] max-w-sm">{p.description}</p>
-                    <Button asChild size="sm" className="mt-4 bg-white/95 text-black hover:bg-white rounded-full"><Link href={p.link} target="_blank">Learn more</Link></Button>
+                    <Button asChild size="sm" className="mt-4 bg-white/95 text-black hover:bg-white rounded-full"><Link href={p.link} target="_blank">{tPrograms("learnMore")}</Link></Button>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -156,7 +164,7 @@ export default function HomeClient({ locale, latestNews }: Props) {
       {/* News */}
       <section id="news" className="section-padding">
         <div className="container-max px-6 lg:px-10">
-          <SectionHeader eyebrow="Updates" title="Latest News" />
+          <SectionHeader eyebrow={tNews("eyebrow")} title={tNews("title")} />
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {latestNews.map((n, idx) => (
               <motion.div key={n.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: idx * 0.05 }} className="h-full">
@@ -171,10 +179,10 @@ export default function HomeClient({ locale, latestNews }: Props) {
                     <p className="text-sm text-neutral-700 line-clamp-2">{n.excerpt}</p>
                     <div className="mt-3 flex items-center gap-2 text-xs text-neutral-500">
                       <Calendar className="w-3.5 h-3.5" />
-                      <span>{new Date(n.date).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "2-digit" })}</span>
+                      <span>{new Date(n.date).toLocaleDateString(locale, { year: "numeric", month: "short", day: "2-digit" })}</span>
                     </div>
                     <div className="mt-auto">
-                      <Button asChild variant="link" className="px-0 text-[var(--color-brand-gold)]"><Link href={n.link}>Read more</Link></Button>
+                      <Button asChild variant="link" className="px-0 text-[var(--color-brand-gold)]"><Link href={n.link}>{tCommon("readMore")}</Link></Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -187,7 +195,7 @@ export default function HomeClient({ locale, latestNews }: Props) {
       {/* Sponsors (full-bleed) */}
       <section className="section-padding bg-white px-0">
         <div className="container-max px-6 lg:px-10">
-          <SectionHeader eyebrow="Supporters" title="Sponsors & Partners" />
+          <SectionHeader eyebrow={tSponsors("eyebrow")} title={tSponsors("title")} />
         </div>
         <div className="relative overflow-hidden w-full">
           <div className="pointer-events-none absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-white to-transparent z-10" />
@@ -214,7 +222,7 @@ export default function HomeClient({ locale, latestNews }: Props) {
               <span className="font-semibold text-lg">MecHack Qarabag</span>
             </div>
             <p className="mt-3 text-sm/6 opacity-85 max-w-xs">
-              We are a FIRST Robotics team empowering youth in STEM through robotics, innovation and community projects.
+              {tFooter("tagline")}
             </p>
             <div className="mt-4 flex items-center gap-3">
               <Link href="#" aria-label="Instagram" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
@@ -227,25 +235,25 @@ export default function HomeClient({ locale, latestNews }: Props) {
           </div>
 
           <div>
-            <div className="font-semibold mb-3">Quick Links</div>
+            <div className="font-semibold mb-3">{tFooter("quickLinks")}</div>
             <ul className="space-y-2 text-sm/6 opacity-90">
-              <li><Link href={`/${locale}/about`} className="hover:underline">About</Link></li>
-              <li><Link href={`/${locale}/projects-events`} className="hover:underline">Projects & Events</Link></li>
-              <li><Link href={`/${locale}/news`} className="hover:underline">News</Link></li>
+              <li><Link href={`/${locale}/about`} className="hover:underline">{tHeader("about")}</Link></li>
+              <li><Link href={`/${locale}/projects-events`} className="hover:underline">{tHeader("projectsEvents")}</Link></li>
+              <li><Link href={`/${locale}/news`} className="hover:underline">{tHeader("news")}</Link></li>
             </ul>
           </div>
 
           <div>
-            <div className="font-semibold mb-3">Programs</div>
+            <div className="font-semibold mb-3">{tFooter("programs")}</div>
             <ul className="space-y-2 text-sm/6 opacity-90">
-              <li><Link href="https://www.firstlegoleague.org/" target="_blank" className="hover:underline">FIRST LEGO League</Link></li>
-              <li><Link href="https://www.firstinspires.org/robotics/ftc" target="_blank" className="hover:underline">FIRST Tech Challenge</Link></li>
-              <li><Link href="https://www.firstinspires.org/robotics/frc" target="_blank" className="hover:underline">FIRST Robotics Competition</Link></li>
+              <li><Link href="https://www.firstlegoleague.org/" target="_blank" className="hover:underline">{tPrograms("items.fll.title")}</Link></li>
+              <li><Link href="https://www.firstinspires.org/robotics/ftc" target="_blank" className="hover:underline">{tPrograms("items.ftc.title")}</Link></li>
+              <li><Link href="https://www.firstinspires.org/robotics/frc" target="_blank" className="hover:underline">{tPrograms("items.frc.title")}</Link></li>
             </ul>
           </div>
 
           <div>
-            <div className="font-semibold mb-3">Contact</div>
+            <div className="font-semibold mb-3">{tFooter("contact")}</div>
             <ul className="space-y-2 text-sm/6 opacity-95">
               <li className="flex items-start gap-2"><Mail className="w-4 h-4 mt-0.5" /> mechackqarabag@gmail.com</li>
               <li className="flex items-start gap-2"><Phone className="w-4 h-4 mt-0.5" /> +994 70 595 10 30</li>
@@ -255,7 +263,7 @@ export default function HomeClient({ locale, latestNews }: Props) {
         </div>
         <Separator className="bg-white/10" />
         <div className="container-max px-6 lg:px-10 py-5 text-xs/6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between opacity-80">
-          <div>© {new Date().getFullYear()} MecHack Qarabag. All rights reserved.</div>
+          <div>© {new Date().getFullYear()} MecHack Qarabag. {tFooter("copyright")}</div>
         </div>
       </footer>
 

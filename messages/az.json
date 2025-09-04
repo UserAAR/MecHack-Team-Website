@@ -1,10 +1,114 @@
 {
   "Header": {
+    "home": "Ana səhifə",
     "about": "Haqqımızda",
     "programs": "Proqramlar",
-    "news": "Xəbərlər"
+    "projectsEvents": "Layihələr və Tədbirlər",
+    "news": "Xəbərlər",
+    "language": "Dil"
   },
   "Hero": {
-    "title": "Qlobal robototexnika və STEM icması gəncləri gələcəyin çağırışlarına hazırlaşdırır"
+    "title": "Qlobal robototexnika və STEM icması gəncləri gələcəyin çağırışlarına hazırlaşdırır",
+    "ctaLearnMore": "Daha ətraflı",
+    "ctaExplorePrograms": "Proqramları kəşf edin"
+  },
+  "Common": {
+    "tagline": "Gəncləri robototexnika, innovasiya və icma vasitəsilə STEM sahəsində gücləndiririk.",
+    "readMore": "Daha çox oxu",
+    "details": "Detallar",
+    "noNews": "Hələ xəbər yoxdur.",
+    "noEvents": "Yaxın zamanda tədbir yoxdur.",
+    "allRights": "Bütün hüquqlar qorunur."
+  },
+  "Mission": {
+    "eyebrow": "Biz kimik",
+    "title": "Missiyamız",
+    "items": {
+      "robotics": { "title": "Robototexnika", "text": "Biz rəqabətədavamlı robotlar və dayanıqlı düşüncələr formalaşdırırıq." },
+      "teamwork": { "title": "Komanda işi", "text": "Biz əməkdaşlıq, liderlik və ədalətli oyunu öyrədirik." },
+      "community": { "title": "İcma", "text": "Gəncləri icmamıza xidmət etməyə və təsir göstərməyə ruhlandırırıq." },
+      "innovation": { "title": "Yenilik", "text": "Biz tez iterasiya edir və yaradıcı mühəndisliyi qeyd edirik." },
+      "outreach": { "title": "Maarifləndirmə", "text": "Tədbirlər, çıxışlar və media vasitəsilə bilikləri paylaşırıq." },
+      "future": { "title": "Gələcək", "text": "Biz gəncləri sabahın çağırışlarına hazırlayırıq." }
+    }
+  },
+  "Programs": {
+    "eyebrow": "Nə edirik",
+    "title": "Proqramlar",
+    "learnMore": "Daha ətraflı",
+    "items": {
+      "fll": {
+        "title": "FIRST LEGO League",
+        "age": "4–14 yaş",
+        "description": "FIRST® LEGO® League 4–14 yaşlı uşaqlara əyləncəli və praktiki öyrənmə ilə STEM-i tanıdır. İştirakçılar qlobal robototexnika proqramı çərçivəsində real problemlərin həllini öyrənərək bu günü tələbələr və müəllimlər üçün daha yaxşı gələcək qurmağa kömək edirlər. Üç istiqamət gəncləri praktiki STEM öyrənməsi və robototexnika vasitəsilə tənqidi düşünmə, kodlaşdırma və dizayn bacarıqlarını inkişaf etdirməyə həvəsləndirir."
+      },
+      "ftc": {
+        "title": "FIRST Tech Challenge",
+        "age": "12–18 yaş",
+        "description": "FIRST® Tech Challenge şagirdlərə mühəndis kimi düşünməyi öyrədir. Komandalar digər komandalarla ittifaq formatında yarışmaq üçün robotları dizayn edir, yığır və proqramlaşdırır. Robotlar təkrar istifadə olunan platformadan qurulur, Android texnologiyası ilə idarə olunur və müxtəlif səviyyəli Java əsaslı proqramlaşdırma ilə kodlana bilər."
+      },
+      "frc": {
+        "title": "FIRST Robotics Competition",
+        "age": "9–12 sinif",
+        "description": "FIRST® Robotics Competition komandaları standart hissələr dəsti və qaydalarla başlayaraq mövzuya uyğun yarışlarda çıxış edən robotları dizayn edir, proqramlaşdırır və yığırlar. Komandalar həmçinin brend yaradır, tərəfdaşlıqlar qurur və yerli icmada STEM-i təşviq edirlər."
+      }
+    }
+  },
+  "News": {
+    "eyebrow": "Yeniliklər",
+    "title": "Komandamızdan, yarışlardan və ictimai fəaliyyətlərdən ən son yeniliklər.",
+    "readMore": "Daha çox oxu"
+  },
+  "Sponsors": {
+    "eyebrow": "Dəstəkçilər",
+    "title": "Sponsorlar və tərəfdaşlar"
+  },
+  "Footer": {
+    "quickLinks": "Tez keçidlər",
+    "programs": "Proqramlar",
+    "contact": "Əlaqə",
+    "about": "Haqqımızda",
+    "projectsEvents": "Layihələr və Tədbirlər",
+    "news": "Xəbərlər",
+    "tagline": "Biz robototexnika, innovasiya və icma layihələri vasitəsilə gəncləri STEM sahəsində gücləndirən FIRST Robotics komandasıyıq.",
+    "copyright": "Bütün hüquqlar qorunur."
+  },
+  "About": {
+    "heroTitle": "MecHack Qarabağ haqqında",
+    "heroDescription": "Biz Qarabağdan olan, gəncləri praktiki mühəndislik, əməkdaşlıq və maarifləndirmə ilə gücləndirən icma əsaslı robototexnika komandasıyıq.",
+    "ctaExplorePrograms": "Proqramları kəşf edin",
+    "valuesEyebrow": "Bizi motivasiya edən",
+    "valuesTitle": "Dəyərlərimiz",
+    "values": {
+      "purpose": { "title": "Məqsəd", "text": "Biz robototexnika və STEM vasitəsilə gəncləri ilhamlandırır və gücləndiririk." },
+      "collaboration": { "title": "Əməkdaşlıq", "text": "Komanda işi, hörmət və paylaşım mədəniyyəti ilə birlikdə inkişaf edirik." },
+      "innovation": { "title": "Yenilik", "text": "Tez-tez sınaqdan keçirir, təcrübə edir və yaradıcılığı alqışlayırıq." }
+    },
+    "storyTitle": "Hekayəmiz",
+    "storyP1": "Seminarlardan yarışlara qədər, marağı və texniki mükəmməlliyi formalaşdırırıq. Üzvlərimiz mexaniki dizayn, proqramlaşdırma, elektronika və liderliyi real yarışan robotlar quraraq öyrənirlər.",
+    "storyP2": "Meydandan kənarda isə, məktəblərlə və tərəfdaşlarla əməkdaşlıq edir, kiçik yaşlılara mentorluq edir və icmamızda STEM ekosistemini böyütmək üçün bilikləri paylaşırıq.",
+    "partnerTitle": "Bizimlə əməkdaş olun",
+    "partnerText": "Təsirimizi genişləndirmək üçün tərəfdaşları, mentorları və dəstəkçiləri məmnuniyyətlə qarşılayırıq.",
+    "emailUs": "Bizə e-poçt göndərin",
+    "seeLatestNews": "Son xəbərlərə baxın"
+  },
+  "ProjectsEvents": {
+    "heroTitle": "Layihələr və Tədbirlər",
+    "heroDescription": "Davam edən mühəndislik layihələrimizi və qarşıdakı icma tədbirlərimizi kəşf edin.",
+    "projectsEyebrow": "Nə qururuq",
+    "projectsTitle": "Seçilmiş layihələr",
+    "eventsEyebrow": "Qoşulun",
+    "eventsTitle": "Yaxınlaşan tədbirlər",
+    "readMore": "Daha çox oxu",
+    "details": "Detallar",
+    "emptyEvents": "Yaxın zamanda tədbir yoxdur."
+  },
+  "NewsDetail": {
+    "backToNews": "Xəbərlərə qayıt",
+    "contentComing": "Məzmun tezliklə əlavə ediləcək."
+  },
+  "ProjectDetail": {
+    "backToProjectsEvents": "Layihələr və Tədbirlərə qayıt",
+    "moreDetailsComing": "Ətraflı məlumat tezliklə əlavə ediləcək."
   }
 } 

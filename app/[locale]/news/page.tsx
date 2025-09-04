@@ -10,8 +10,14 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { MobileNav } from "@/components/shared/MobileNav";
+import { getTranslations } from "next-intl/server";
 
 const BRAND = { cream: "#f5f2e1", navy: "#000080", gold: "#e38d1a" };
+
+const locales = ["en", "az"] as const;
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
 
 type NewsItem = { id: string; title: string; excerpt: string; category: string; date: string; image: string; link: string };
 
@@ -39,6 +45,10 @@ async function getNews(locale: string): Promise<NewsItem[]> {
 export default async function NewsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const items = await getNews(locale);
+  const tHeader = await getTranslations({ locale, namespace: "Header" });
+  const tFooter = await getTranslations({ locale, namespace: "Footer" });
+  const tCommon = await getTranslations({ locale, namespace: "Common" });
+  const tNews = await getTranslations({ locale, namespace: "News" });
 
   return (
     <div className="min-h-screen bg-[var(--color-brand-cream)] text-[var(--color-brand-navy)]">
@@ -54,16 +64,20 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/about`}>About</NavigationMenuLink>
+                  <NavigationMenuLink href={`/${locale}/about`}>{tHeader("about")}</NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/projects-events`}>Projects & Events</NavigationMenuLink>
+                  <NavigationMenuLink href={`/${locale}/projects-events`}>{tHeader("projectsEvents")}</NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/news`}>News</NavigationMenuLink>
+                  <NavigationMenuLink href={`/${locale}/news`}>{tHeader("news")}</NavigationMenuLink>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
+            <div className="inline-flex items-center gap-1 bg-white/80 border px-1.5 py-1 rounded-full text-sm">
+              <Link href={`/en`} className={`px-2 py-0.5 rounded-full ${locale === "en" ? "bg-black text-white" : "hover:bg-black/10"}`}>EN</Link>
+              <Link href={`/az`} className={`px-2 py-0.5 rounded-full ${locale === "az" ? "bg-black text-white" : "hover:bg-black/10"}`}>AZ</Link>
+            </div>
           </div>
           <Sheet>
             <SheetTrigger asChild>
@@ -78,8 +92,8 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
 
       <section className="relative w-full overflow-hidden bg-white">
         <div className="container-max px-6 lg:px-10 py-16">
-          <h1 className="text-4xl md:text-6xl font-extrabold">News</h1>
-          <p className="mt-4 max-w-3xl text-lg text-neutral-700">Latest updates from our team, competitions and community outreach.</p>
+          <h1 className="text-4xl md:text-6xl font-extrabold">{tHeader("news")}</h1>
+          <p className="mt-4 max-w-3xl text-lg text-neutral-700">{tNews("title")}</p>
         </div>
       </section>
 
@@ -97,14 +111,14 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
                 <p className="mt-2 text-sm text-neutral-700 line-clamp-2">{n.excerpt}</p>
                 <div className="mt-3 flex items-center gap-2 text-xs text-neutral-500">
                   <Calendar className="w-3.5 h-3.5" />
-                  <span>{new Date(n.date).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "2-digit" })}</span>
+                  <span>{new Date(n.date).toLocaleDateString(locale, { year: "numeric", month: "short", day: "2-digit" })}</span>
                 </div>
-                <Button asChild variant="link" className="px-0 text-[var(--color-brand-gold)]"><Link href={n.link}>Read more</Link></Button>
+                <Button asChild variant="link" className="px-0 text-[var(--color-brand-gold)]"><Link href={n.link}>{tNews("readMore")}</Link></Button>
               </div>
             </div>
           ))}
           {items.length === 0 && (
-            <div className="col-span-full text-center text-neutral-600">No news yet.</div>
+            <div className="col-span-full text-center text-neutral-600">{tCommon("noNews")}</div>
           )}
         </div>
       </section>
@@ -120,7 +134,7 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
               <span className="font-semibold text-lg">MecHack Qarabag</span>
             </div>
             <p className="mt-3 text-sm/6 opacity-85 max-w-xs">
-              We are a FIRST Robotics team empowering youth in STEM through robotics, innovation and community projects.
+              {tFooter("tagline")}
             </p>
             <div className="mt-4 flex items-center gap-3">
               <Link href="https://www.instagram.com/mechackteam" aria-label="Instagram" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
@@ -133,16 +147,16 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
           </div>
 
           <div>
-            <div className="font-semibold mb-3">Quick Links</div>
+            <div className="font-semibold mb-3">{tFooter("quickLinks")}</div>
             <ul className="space-y-2 text-sm/6 opacity-90">
-              <li><Link href={`/${locale}/about`} className="hover:underline">About</Link></li>
-              <li><Link href={`/${locale}/projects-events`} className="hover:underline">Projects & Events</Link></li>
-              <li><Link href={`/${locale}/news`} className="hover:underline">News</Link></li>
+              <li><Link href={`/${locale}/about`} className="hover:underline">{tHeader("about")}</Link></li>
+              <li><Link href={`/${locale}/projects-events`} className="hover:underline">{tHeader("projectsEvents")}</Link></li>
+              <li><Link href={`/${locale}/news`} className="hover:underline">{tHeader("news")}</Link></li>
             </ul>
           </div>
 
           <div>
-            <div className="font-semibold mb-3">Programs</div>
+            <div className="font-semibold mb-3">{tFooter("programs")}</div>
             <ul className="space-y-2 text-sm/6 opacity-90">
               <li><Link href="https://www.firstlegoleague.org/" target="_blank" className="hover:underline">FIRST LEGO League</Link></li>
               <li><Link href="https://www.firstinspires.org/robotics/ftc" target="_blank" className="hover:underline">FIRST Tech Challenge</Link></li>
@@ -161,7 +175,7 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
         </div>
         <Separator className="bg-white/10" />
         <div className="container-max px-6 lg:px-10 py-5 text-xs/6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between opacity-80">
-          <div>© {new Date().getFullYear()} MecHack Qarabag. All rights reserved.</div>
+          <div>© {new Date().getFullYear()} MecHack Qarabag. {tFooter("copyright")}</div>
         </div>
       </footer>
     </div>

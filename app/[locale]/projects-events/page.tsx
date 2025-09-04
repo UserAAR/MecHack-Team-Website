@@ -2,7 +2,7 @@ export const dynamic = "force-static";
 
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, MapPin, Mail, Phone, Instagram, Youtube } from "lucide-react";
+import { Calendar, MapPin, Mail, Phone, Instagram, Youtube, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -11,8 +11,14 @@ import { Separator } from "@/components/ui/separator";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { MobileNav } from "@/components/shared/MobileNav";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
+import { getTranslations } from "next-intl/server";
 
 const BRAND = { cream: "#f5f2e1", navy: "#000080", gold: "#e38d1a" };
+
+const locales = ["en", "az"] as const;
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
 
 type ProjectRow = { id: string; title: string; summary: string | null; image_url: string | null; slug: string | null; published_at: string | null };
 type EventRow = { id: string; title: string; description: string | null; location: string | null; event_date: string | null; image_url: string | null; published_at: string | null };
@@ -40,6 +46,10 @@ async function getData() {
 export default async function ProjectsEventsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const { projects, events } = await getData();
+  const tHeader = await getTranslations({ locale, namespace: "Header" });
+  const tFooter = await getTranslations({ locale, namespace: "Footer" });
+  const tCommon = await getTranslations({ locale, namespace: "Common" });
+  const tPE = await getTranslations({ locale, namespace: "ProjectsEvents" });
 
   return (
     <div className="min-h-screen bg-[var(--color-brand-cream)] text-[var(--color-brand-navy)]">
@@ -56,20 +66,24 @@ export default async function ProjectsEventsPage({ params }: { params: Promise<{
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/about`}>About</NavigationMenuLink>
+                  <NavigationMenuLink href={`/${locale}/about`}>{tHeader("about")}</NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/projects-events`}>Projects & Events</NavigationMenuLink>
+                  <NavigationMenuLink href={`/${locale}/projects-events`}>{tHeader("projectsEvents")}</NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/news`}>News</NavigationMenuLink>
+                  <NavigationMenuLink href={`/${locale}/news`}>{tHeader("news")}</NavigationMenuLink>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
+            <div className="inline-flex items-center gap-1 bg-white/80 border px-1.5 py-1 rounded-full text-sm">
+              <Link href={`/en`} className={`px-2 py-0.5 rounded-full ${locale === "en" ? "bg-black text-white" : "hover:bg-black/10"}`}>EN</Link>
+              <Link href={`/az`} className={`px-2 py-0.5 rounded-full ${locale === "az" ? "bg-black text-white" : "hover:bg-black/10"}`}>AZ</Link>
+            </div>
           </div>
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="outline" size="icon" className="md:hidden">☰</Button>
+              <Button variant="outline" size="icon" className="md:hidden"><Menu className="w-5 h-5" /></Button>
             </SheetTrigger>
             <SheetContent side="right">
               <MobileNav locale={locale} />
@@ -81,15 +95,15 @@ export default async function ProjectsEventsPage({ params }: { params: Promise<{
       {/* Hero */}
       <section className="relative w-full overflow-hidden bg-white">
         <div className="container-max px-6 lg:px-10 py-16">
-          <h1 className="text-4xl md:text-6xl font-extrabold">Projects & Events</h1>
-          <p className="mt-4 max-w-3xl text-lg text-neutral-700">Discover our ongoing engineering projects and upcoming community events.</p>
+          <h1 className="text-4xl md:text-6xl font-extrabold">{tPE("heroTitle")}</h1>
+          <p className="mt-4 max-w-3xl text-lg text-neutral-700">{tPE("heroDescription")}</p>
         </div>
       </section>
 
       {/* Projects */}
       <section className="section-padding">
         <div className="container-max px-6 lg:px-10">
-          <SectionHeader eyebrow="What we build" title="Featured Projects" />
+          <SectionHeader eyebrow={tPE("projectsEyebrow")} title={tPE("projectsTitle")} />
           <div className="grid gap-6 md:grid-cols-3">
             {projects.map((p) => (
               <Card key={p.id} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-shadow">
@@ -101,7 +115,7 @@ export default async function ProjectsEventsPage({ params }: { params: Promise<{
                 </CardHeader>
                 <CardContent className="pt-2">
                   <p className="text-sm text-neutral-700">{p.summary ?? ""}</p>
-                  <Button asChild variant="link" className="px-0 text-[var(--color-brand-gold)]"><Link href={`/${locale}/projects-events/${p.slug ?? p.id}`}>Read more</Link></Button>
+                  <Button asChild variant="link" className="px-0 text-[var(--color-brand-gold)]"><Link href={`/${locale}/projects-events/${p.slug ?? p.id}`}>{tPE("readMore")}</Link></Button>
                 </CardContent>
               </Card>
             ))}
@@ -112,14 +126,14 @@ export default async function ProjectsEventsPage({ params }: { params: Promise<{
       {/* Events */}
       <section className="section-padding bg-white">
         <div className="container-max px-6 lg:px-10">
-          <SectionHeader eyebrow="Get involved" title="Upcoming Events" />
+          <SectionHeader eyebrow={tPE("eventsEyebrow")} title={tPE("eventsTitle")} />
           <div className="grid gap-6">
             {events.map((e) => (
               <div key={e.id} className="rounded-xl border border-black/5 bg-[var(--color-brand-cream)] p-5 flex flex-col md:flex-row md:items-center md:justify-between">
                 <div className="flex items-start gap-4">
                   <div className="shrink-0 rounded-lg bg-white px-3 py-2 text-sm font-semibold flex items-center gap-2 ring-1 ring-black/5">
                     <Calendar className="w-4 h-4" />
-                    <span>{new Date(e.event_date ?? e.published_at ?? new Date().toISOString()).toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" })}</span>
+                    <span>{new Date(e.event_date ?? e.published_at ?? new Date().toISOString()).toLocaleDateString(locale, { month: "short", day: "2-digit", year: "numeric" })}</span>
                   </div>
                   <div>
                     <div className="font-semibold text-lg">{e.title}</div>
@@ -129,13 +143,13 @@ export default async function ProjectsEventsPage({ params }: { params: Promise<{
                 </div>
                 <div className="mt-4 md:mt-0">
                   <Button asChild className="rounded-full bg-[var(--color-brand-gold)] text-black hover:bg-[var(--color-brand-gold)]/90">
-                    <Link href={`/${locale}`}>Details</Link>
+                    <Link href={`/${locale}`}>{tCommon("details")}</Link>
                   </Button>
                 </div>
               </div>
             ))}
             {events.length === 0 && (
-              <div className="text-sm text-neutral-600">No upcoming events.</div>
+              <div className="text-sm text-neutral-600">{tCommon("noEvents")}</div>
             )}
           </div>
         </div>
@@ -153,10 +167,10 @@ export default async function ProjectsEventsPage({ params }: { params: Promise<{
               <span className="font-semibold text-lg">MecHack Qarabag</span>
             </div>
             <p className="mt-3 text-sm/6 opacity-85 max-w-xs">
-              We are a FIRST Robotics team empowering youth in STEM through robotics, innovation and community projects.
+              {tFooter("tagline")}
             </p>
             <div className="mt-4 flex items-center gap-3">
-              <Link href="https://www.instagram.com/mechackteam" aria-label="Instagram" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
+              <Link href="#" aria-label="Instagram" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
                 <Instagram className="w-4 h-4" />
               </Link>
               <Link href="#" aria-label="YouTube" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
@@ -166,16 +180,16 @@ export default async function ProjectsEventsPage({ params }: { params: Promise<{
           </div>
 
           <div>
-            <div className="font-semibold mb-3">Quick Links</div>
+            <div className="font-semibold mb-3">{tFooter("quickLinks")}</div>
             <ul className="space-y-2 text-sm/6 opacity-90">
-              <li><Link href={`/${locale}/about`} className="hover:underline">About</Link></li>
-              <li><Link href={`/${locale}/projects-events`} className="hover:underline">Projects & Events</Link></li>
-              <li><Link href={`/${locale}/news`} className="hover:underline">News</Link></li>
+              <li><Link href={`/${locale}/about`} className="hover:underline">{tHeader("about")}</Link></li>
+              <li><Link href={`/${locale}/projects-events`} className="hover:underline">{tHeader("projectsEvents")}</Link></li>
+              <li><Link href={`/${locale}/news`} className="hover:underline">{tHeader("news")}</Link></li>
             </ul>
           </div>
 
           <div>
-            <div className="font-semibold mb-3">Programs</div>
+            <div className="font-semibold mb-3">{tFooter("programs")}</div>
             <ul className="space-y-2 text-sm/6 opacity-90">
               <li><Link href="https://www.firstlegoleague.org/" target="_blank" className="hover:underline">FIRST LEGO League</Link></li>
               <li><Link href="https://www.firstinspires.org/robotics/ftc" target="_blank" className="hover:underline">FIRST Tech Challenge</Link></li>
@@ -184,7 +198,7 @@ export default async function ProjectsEventsPage({ params }: { params: Promise<{
           </div>
 
           <div>
-            <div className="font-semibold mb-3">Contact</div>
+            <div className="font-semibold mb-3">{tFooter("contact")}</div>
             <ul className="space-y-2 text-sm/6 opacity-95">
               <li className="flex items-start gap-2"><Mail className="w-4 h-4 mt-0.5" /> mechackqarabag@gmail.com</li>
               <li className="flex items-start gap-2"><Phone className="w-4 h-4 mt-0.5" /> +994 70 595 10 30</li>
@@ -194,7 +208,7 @@ export default async function ProjectsEventsPage({ params }: { params: Promise<{
         </div>
         <Separator className="bg-white/10" />
         <div className="container-max px-6 lg:px-10 py-5 text-xs/6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between opacity-80">
-          <div>© {new Date().getFullYear()} MecHack Qarabag. All rights reserved.</div>
+          <div>© {new Date().getFullYear()} MecHack Qarabag. {tFooter("copyright")}</div>
         </div>
       </footer>
     </div>

@@ -1,10 +1,114 @@
 {
   "Header": {
+    "home": "Home",
     "about": "About",
     "programs": "Programs",
-    "news": "News"
+    "projectsEvents": "Projects & Events",
+    "news": "News",
+    "language": "Language"
   },
   "Hero": {
-    "title": "Global robotics and STEM community preparing youth for tomorrow’s challenges"
+    "title": "Global robotics and STEM community preparing youth for tomorrow’s challenges",
+    "ctaLearnMore": "Learn more",
+    "ctaExplorePrograms": "Explore programs"
+  },
+  "Common": {
+    "tagline": "Empowering youth in STEM through robotics, innovation and community.",
+    "readMore": "Read more",
+    "details": "Details",
+    "noNews": "No news yet.",
+    "noEvents": "No upcoming events.",
+    "allRights": "All rights reserved."
+  },
+  "Mission": {
+    "eyebrow": "Who we are",
+    "title": "Our Mission",
+    "items": {
+      "robotics": { "title": "Robotics", "text": "We build competitive robots and resilient minds." },
+      "teamwork": { "title": "Teamwork", "text": "We coach collaboration, leadership and fair play." },
+      "community": { "title": "Community", "text": "We inspire youth to serve and impact our community." },
+      "innovation": { "title": "Innovation", "text": "We iterate fast and celebrate creative engineering." },
+      "outreach": { "title": "Outreach", "text": "We share knowledge via events, talks and media." },
+      "future": { "title": "Future", "text": "We prepare youth for tomorrow’s challenges." }
+    }
+  },
+  "Programs": {
+    "eyebrow": "What we do",
+    "title": "Programs",
+    "learnMore": "Learn more",
+    "items": {
+      "fll": {
+        "title": "FIRST LEGO League",
+        "age": "Ages 4–14",
+        "description": "FIRST® LEGO® League introduces STEM to children ages 4-14 through fun, exciting hands-on learning. Participants gain real-world problem-solving experiences through a guided, global robotics program, helping today’s students and teachers build a better future together. The three divisions inspire youth to experiment and grow their critical thinking, coding, and design skills through hands-on STEM learning and robotics."
+      },
+      "ftc": {
+        "title": "FIRST Tech Challenge",
+        "age": "Ages 12–18",
+        "description": "FIRST® Tech Challenge students learn to think like engineers. Teams design, build, and program robots to compete in an alliance format against other teams. Robots are built from a reusable platform, powered by android technology, and can be coded using a variety of levels of Java-based programming."
+      },
+      "frc": {
+        "title": "FIRST Robotics Competition",
+        "age": "Grades 9–12",
+        "description": "FIRST® Robotics Competition teams design, program, and build a robot starting with a standard kit of parts and common set of rules to play in a themed head-to-head challenge. Teams also build a brand, develop community partnerships for support, and work to promote STEM in their local community."
+      }
+    }
+  },
+  "News": {
+    "eyebrow": "Updates",
+    "title": "Latest updates from our team, competitions and community outreach.",
+    "readMore": "Read more"
+  },
+  "Sponsors": {
+    "eyebrow": "Supporters",
+    "title": "Sponsors & Partners"
+  },
+  "Footer": {
+    "quickLinks": "Quick Links",
+    "programs": "Programs",
+    "contact": "Contact",
+    "about": "About",
+    "projectsEvents": "Projects & Events",
+    "news": "News",
+    "tagline": "We are a FIRST Robotics team empowering youth in STEM through robotics, innovation and community projects.",
+    "copyright": "All rights reserved."
+  },
+  "About": {
+    "heroTitle": "About MecHack Qarabag",
+    "heroDescription": "We are a community-driven robotics team from Qarabag empowering youth through hands-on engineering, collaboration and outreach.",
+    "ctaExplorePrograms": "Explore programs",
+    "valuesEyebrow": "What drives us",
+    "valuesTitle": "Our Values",
+    "values": {
+      "purpose": { "title": "Purpose", "text": "We aim to inspire and empower youth through robotics and STEM." },
+      "collaboration": { "title": "Collaboration", "text": "We thrive together with teamwork, respect and shared learning." },
+      "innovation": { "title": "Innovation", "text": "We iterate fast, experiment often and celebrate creativity." }
+    },
+    "storyTitle": "Our Story",
+    "storyP1": "From workshops to competitions, we cultivate curiosity and technical excellence. Our members learn mechanical design, programming, electronics and leadership by building real robots that compete and inspire.",
+    "storyP2": "Beyond the field, we mentor younger students, collaborate with schools and partners, and share knowledge to grow the STEM ecosystem across our community.",
+    "partnerTitle": "Partner with us",
+    "partnerText": "We welcome partnerships, mentors and supporters to expand our impact.",
+    "emailUs": "Email us",
+    "seeLatestNews": "See latest news"
+  },
+  "ProjectsEvents": {
+    "heroTitle": "Projects & Events",
+    "heroDescription": "Discover our ongoing engineering projects and upcoming community events.",
+    "projectsEyebrow": "What we build",
+    "projectsTitle": "Featured Projects",
+    "eventsEyebrow": "Get involved",
+    "eventsTitle": "Upcoming Events",
+    "readMore": "Read more",
+    "details": "Details",
+    "emptyEvents": "No upcoming events."
+  },
+  "NewsDetail": {
+    "backToNews": "Back to News",
+    "contentComing": "Content coming soon."
+  },
+  "ProjectDetail": {
+    "backToProjectsEvents": "Back to Projects & Events",
+    "moreDetailsComing": "More details coming soon."
   }
 } 

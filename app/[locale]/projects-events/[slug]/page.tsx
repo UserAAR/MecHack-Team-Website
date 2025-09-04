@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, Instagram, Youtube, Mail, MapPin, Phone, ArrowLeft } from "lucide-react";
 import type { PostgrestError } from "@supabase/supabase-js";
 import { MobileNav } from "@/components/shared/MobileNav";
+import { getTranslations } from "next-intl/server";
 
 type ProjectRow = {
   id: string;
@@ -22,6 +23,9 @@ type ProjectRow = {
 
 export default async function ProjectDetail({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
+  const tHeader = await getTranslations({ locale, namespace: "Header" });
+  const tFooter = await getTranslations({ locale, namespace: "Footer" });
+  const tProjectDetail = await getTranslations({ locale, namespace: "ProjectDetail" });
   const supabase = await getSupabaseServerClient();
   const fields = "id, title, summary, content, image_url, slug, published_at";
   let { data, error }: { data: ProjectRow | null; error: PostgrestError | null } = await supabase
@@ -55,21 +59,20 @@ export default async function ProjectDetail({ params }: { params: Promise<{ loca
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/about`}>About</NavigationMenuLink>
+                  <NavigationMenuLink href={`/${locale}/about`}>{tHeader("about")}</NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/projects-events`}>Projects & Events</NavigationMenuLink>
+                  <NavigationMenuLink href={`/${locale}/projects-events`}>{tHeader("projectsEvents")}</NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/news`}>News</NavigationMenuLink>
+                  <NavigationMenuLink href={`/${locale}/news`}>{tHeader("news")}</NavigationMenuLink>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
-            <select aria-label="Language" className="bg-white/80 border px-3 py-1.5 rounded-full text-sm">
-              <option value="en">EN</option>
-              <option value="az">AZ</option>
-              <option value="ru">RU</option>
-            </select>
+            <div className="inline-flex items-center gap-1 bg-white/80 border px-1.5 py-1 rounded-full text-sm">
+              <Link href={`/en`} className={`px-2 py-0.5 rounded-full ${locale === "en" ? "bg-black text-white" : "hover:bg-black/10"}`}>EN</Link>
+              <Link href={`/az`} className={`px-2 py-0.5 rounded-full ${locale === "az" ? "bg-black text-white" : "hover:bg-black/10"}`}>AZ</Link>
+            </div>
           </div>
           <Sheet>
             <SheetTrigger asChild>
@@ -86,7 +89,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ loca
         <div className="container-max px-6 lg:px-10 py-10">
           <div className="mb-6">
             <Button asChild className="rounded-full bg-[var(--color-brand-gold)] text-black hover:bg-[var(--color-brand-gold)]/90">
-              <Link href={`/${locale}/projects-events`} className="inline-flex items-center gap-2"><ArrowLeft className="w-4 h-4" /> Back to Projects & Events</Link>
+              <Link href={`/${locale}/projects-events`} className="inline-flex items-center gap-2"><ArrowLeft className="w-4 h-4" /> {tProjectDetail("backToProjectsEvents")}</Link>
             </Button>
           </div>
           <h1 className="text-3xl md:text-5xl font-extrabold">{data.title}</h1>
@@ -108,7 +111,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ loca
             {data.content ? (
               <div dangerouslySetInnerHTML={{ __html: data.content }} />
             ) : (
-              <p>More details coming soon.</p>
+              <p>{tProjectDetail("moreDetailsComing")}</p>
             )}
           </div>
         </div>
@@ -126,10 +129,10 @@ export default async function ProjectDetail({ params }: { params: Promise<{ loca
               <span className="font-semibold text-lg">MecHack Qarabag</span>
             </div>
             <p className="mt-3 text-sm/6 opacity-85 max-w-xs">
-              We are a FIRST Robotics team empowering youth in STEM through robotics, innovation and community projects.
+              {tFooter("tagline")}
             </p>
             <div className="mt-4 flex items-center gap-3">
-              <Link href="https://www.instagram.com/mechackteam" aria-label="Instagram" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
+              <Link href="#" aria-label="Instagram" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
                 <Instagram className="w-4 h-4" />
               </Link>
               <Link href="#" aria-label="YouTube" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
@@ -139,16 +142,16 @@ export default async function ProjectDetail({ params }: { params: Promise<{ loca
           </div>
 
           <div>
-            <div className="font-semibold mb-3">Quick Links</div>
+            <div className="font-semibold mb-3">{tFooter("quickLinks")}</div>
             <ul className="space-y-2 text-sm/6 opacity-90">
-              <li><Link href={`/${locale}/about`} className="hover:underline">About</Link></li>
-              <li><Link href={`/${locale}/projects-events`} className="hover:underline">Projects & Events</Link></li>
-              <li><Link href={`/${locale}/news`} className="hover:underline">News</Link></li>
+              <li><Link href={`/${locale}/about`} className="hover:underline">{tHeader("about")}</Link></li>
+              <li><Link href={`/${locale}/projects-events`} className="hover:underline">{tHeader("projectsEvents")}</Link></li>
+              <li><Link href={`/${locale}/news`} className="hover:underline">{tHeader("news")}</Link></li>
             </ul>
           </div>
 
           <div>
-            <div className="font-semibold mb-3">Programs</div>
+            <div className="font-semibold mb-3">{tFooter("programs")}</div>
             <ul className="space-y-2 text-sm/6 opacity-90">
               <li><Link href="https://www.firstlegoleague.org/" target="_blank" className="hover:underline">FIRST LEGO League</Link></li>
               <li><Link href="https://www.firstinspires.org/robotics/ftc" target="_blank" className="hover:underline">FIRST Tech Challenge</Link></li>
@@ -157,7 +160,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ loca
           </div>
 
           <div>
-            <div className="font-semibold mb-3">Contact</div>
+            <div className="font-semibold mb-3">{tFooter("contact")}</div>
             <ul className="space-y-2 text-sm/6 opacity-95">
               <li className="flex items-start gap-2"><Mail className="w-4 h-4 mt-0.5" /> mechackqarabag@gmail.com</li>
               <li className="flex items-start gap-2"><Phone className="w-4 h-4 mt-0.5" /> +994 70 595 10 30</li>
@@ -167,7 +170,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ loca
         </div>
         <Separator className="bg-white/10" />
         <div className="container-max px-6 lg:px-10 py-5 text-xs/6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between opacity-80">
-          <div>© {new Date().getFullYear()} MecHack Qarabag. All rights reserved.</div>
+          <div>© {new Date().getFullYear()} MecHack Qarabag. {tFooter("copyright")}</div>
         </div>
       </footer>
     </div>
