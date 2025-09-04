@@ -6,8 +6,9 @@ import { getSupabaseStaticClient } from "@/lib/supabase/static";
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const supabase = getSupabaseStaticClient();
+  const table = locale === "az" ? "news_az" : "news";
   const { data } = await supabase
-    .from("news")
+    .from(table)
     .select("id, title, excerpt, category, image_url, published_at, slug")
     .not("published_at", "is", null)
     .order("published_at", { ascending: false })

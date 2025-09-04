@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu, Instagram, Youtube, Mail, MapPin, Phone, ArrowLeft, Calendar, MapPin as Pin } from "lucide-react";
+import { Menu, Instagram, Linkedin, Mail, MapPin, Phone, ArrowLeft, Calendar, MapPin as Pin } from "lucide-react";
 import { MobileNav } from "@/components/shared/MobileNav";
 import { getTranslations } from "next-intl/server";
 
@@ -16,8 +16,9 @@ export default async function EventDetail({ params }: { params: Promise<{ locale
   const tFooter = await getTranslations({ locale, namespace: "Footer" });
   const tPE = await getTranslations({ locale, namespace: "ProjectsEvents" });
   const supabase = await getSupabaseServerClient();
+  const table = locale === "az" ? "events_az" : "events";
   const { data, error } = await supabase
-    .from("events")
+    .from(table)
     .select("id, title, description, location, event_date, image_url, published_at")
     .eq("id", id)
     .maybeSingle();
@@ -112,12 +113,8 @@ export default async function EventDetail({ params }: { params: Promise<{ locale
               {tFooter("tagline")}
             </p>
             <div className="mt-4 flex items-center gap-3">
-              <Link href="#" aria-label="Instagram" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
-                <Instagram className="w-4 h-4" />
-              </Link>
-              <Link href="#" aria-label="YouTube" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
-                <Youtube className="w-4 h-4" />
-              </Link>
+              <Link href="#" aria-label="Instagram" className="inline-flex p-2 rounded-full border hover:bg-black/[0.02]"><Instagram className="w-4 h-4" /></Link>
+              <Link href="https://www.linkedin.com/in/mechack-team-726b52258/" target="_blank" aria-label="LinkedIn" className="inline-flex p-2 rounded-full border hover:bg-black/[0.02]"><Linkedin className="w-4 h-4" /></Link>
             </div>
           </div>
 

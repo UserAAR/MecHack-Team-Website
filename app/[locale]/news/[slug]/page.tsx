@@ -19,12 +19,17 @@ type NewsRow = { id: string; slug: string | null; published_at: string | null; t
 
 export async function generateStaticParams() {
   const supabase = getSupabaseStaticClient();
-  const { data } = await supabase
-    .from("news")
-    .select("slug")
-    .not("published_at", "is", null);
-  const slugs = (data ?? []).map((r: any) => r.slug).filter(Boolean) as string[];
-  return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
+  const params: { locale: string; slug: string }[] = [];
+  for (const locale of locales) {
+    const table = locale === "az" ? "news_az" : "news";
+    const { data } = await supabase
+      .from(table)
+      .select("slug")
+      .not("published_at", "is", null);
+    const slugs = (data ?? []).map((r: any) => r.slug).filter(Boolean) as string[];
+    params.push(...slugs.map((slug) => ({ locale, slug })));
+  }
+  return params;
 }
 
 export default async function NewsDetail({ params }: { params: Promise<{ locale: string; slug: string }> }) {
@@ -33,8 +38,9 @@ export default async function NewsDetail({ params }: { params: Promise<{ locale:
   const tFooter = await getTranslations({ locale, namespace: "Footer" });
   const tNewsDetail = await getTranslations({ locale, namespace: "NewsDetail" });
   const supabase = getSupabaseStaticClient();
+  const table = locale === "az" ? "news_az" : "news";
   const { data, error } = await supabase
-    .from("news")
+    .from(table)
     .select("id, title, excerpt, content, category, image_url, published_at, slug")
     .eq("slug", slug)
     .maybeSingle<NewsRow>();

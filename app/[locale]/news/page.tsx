@@ -26,8 +26,9 @@ type Row = { id: string; title: string; excerpt: string | null; category: string
 
 async function getNews(locale: string): Promise<NewsItem[]> {
   const supabase = getSupabaseStaticClient();
+  const table = locale === "az" ? "news_az" : "news";
   const { data } = await supabase
-    .from("news")
+    .from(table)
     .select("id, title, excerpt, category, image_url, published_at, slug")
     .not("published_at", "is", null)
     .order("published_at", { ascending: false });
@@ -163,7 +164,7 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
           </div>
 
           <div>
-            <div className="font-semibold mb-3">Contact</div>
+            <div className="font-semibold mb-3">{tFooter("contact")}</div>
             <ul className="space-y-2 text-sm/6 opacity-95">
               <li className="flex items-start gap-2"><Mail className="w-4 h-4 mt-0.5" /> mechackqarabag@gmail.com</li>
               <li className="flex items-start gap-2"><Phone className="w-4 h-4 mt-0.5" /> +994 70 595 10 30</li>

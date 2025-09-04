@@ -95,3 +95,64 @@ alter table public.projects
 -- Indexes for detail pages
 create index if not exists idx_news_slug on public.news((lower(slug)));
 create index if not exists idx_projects_slug on public.projects((lower(slug))); 
+
+-- Azerbaijani localized tables (mirror of base, separate content)
+create table if not exists public.news_az (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  excerpt text,
+  content text,
+  category text,
+  slug text unique,
+  image_url text,
+  published_at timestamp with time zone,
+  created_by uuid references public.profiles(id) on delete set null,
+  created_at timestamp with time zone default now(),
+  updated_at timestamp with time zone default now()
+);
+create index if not exists idx_news_az_published_at on public.news_az using btree (published_at desc);
+create index if not exists idx_news_az_slug on public.news_az((lower(slug)));
+
+create table if not exists public.events_az (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  description text,
+  location text,
+  event_date timestamp with time zone,
+  image_url text,
+  published_at timestamp with time zone,
+  created_by uuid references public.profiles(id) on delete set null,
+  created_at timestamp with time zone default now(),
+  updated_at timestamp with time zone default now()
+);
+create index if not exists idx_events_az_published_at on public.events_az using btree (published_at desc);
+
+create table if not exists public.projects_az (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  summary text,
+  content text,
+  image_url text,
+  published_at timestamp with time zone,
+  created_by uuid references public.profiles(id) on delete set null,
+  created_at timestamp with time zone default now(),
+  updated_at timestamp with time zone default now(),
+  slug text
+);
+create index if not exists idx_projects_az_published_at on public.projects_az using btree (published_at desc);
+create unique index if not exists projects_az_slug_unique_idx on public.projects_az using btree (lower(slug));
+
+-- Enable RLS
+alter table public.news_az enable row level security;
+alter table public.events_az enable row level security;
+alter table public.projects_az enable row level security;
+
+-- Policies (read published to everyone; write only admins)
+create policy if not exists "news_az select published" on public.news_az for select using (published_at is not null);
+create policy if not exists "news_az admin write" on public.news_az for all using (public.is_admin()) with check (public.is_admin());
+
+create policy if not exists "events_az select published" on public.events_az for select using (published_at is not null);
+create policy if not exists "events_az admin write" on public.events_az for all using (public.is_admin()) with check (public.is_admin());
+
+create policy if not exists "projects_az select published" on public.projects_az for select using (published_at is not null);
+create policy if not exists "projects_az admin write" on public.projects_az for all using (public.is_admin()) with check (public.is_admin()); 

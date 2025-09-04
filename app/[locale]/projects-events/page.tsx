@@ -24,16 +24,18 @@ export function generateStaticParams() {
 type ProjectRow = { id: string; title: string; summary: string | null; image_url: string | null; slug: string | null; published_at: string | null };
 type EventRow = { id: string; title: string; description: string | null; location: string | null; event_date: string | null; image_url: string | null; published_at: string | null };
 
-async function getData() {
+async function getData(locale: string) {
   const supabase = getSupabaseStaticClient();
+  const projectsTable = locale === "az" ? "projects_az" : "projects";
+  const eventsTable = locale === "az" ? "events_az" : "events";
   const [projectsRes, eventsRes] = await Promise.all([
     supabase
-      .from("projects")
+      .from(projectsTable)
       .select("id, title, summary, image_url, slug, published_at")
       .not("published_at", "is", null)
       .order("published_at", { ascending: false }),
     supabase
-      .from("events")
+      .from(eventsTable)
       .select("id, title, description, location, event_date, image_url, published_at")
       .not("published_at", "is", null)
       .order("event_date", { ascending: true }),
@@ -46,7 +48,7 @@ async function getData() {
 
 export default async function ProjectsEventsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  const { projects, events } = await getData();
+  const { projects, events } = await getData(locale);
   const tHeader = await getTranslations({ locale, namespace: "Header" });
   const tFooter = await getTranslations({ locale, namespace: "Footer" });
   const tCommon = await getTranslations({ locale, namespace: "Common" });

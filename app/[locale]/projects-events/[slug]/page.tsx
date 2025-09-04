@@ -27,15 +27,16 @@ export default async function ProjectDetail({ params }: { params: Promise<{ loca
   const tFooter = await getTranslations({ locale, namespace: "Footer" });
   const tProjectDetail = await getTranslations({ locale, namespace: "ProjectDetail" });
   const supabase = await getSupabaseServerClient();
+  const table = locale === "az" ? "projects_az" : "projects";
   const fields = "id, title, summary, content, image_url, slug, published_at";
   let { data, error }: { data: ProjectRow | null; error: PostgrestError | null } = await supabase
-    .from("projects")
+    .from(table)
     .select(fields)
     .eq("slug", slug)
     .maybeSingle<ProjectRow>();
   if ((!data || error) && !slug.includes("-")) {
     const byId = await supabase
-      .from("projects")
+      .from(table)
       .select(fields)
       .eq("id", slug)
       .maybeSingle<ProjectRow>();
@@ -69,11 +70,11 @@ export default async function ProjectDetail({ params }: { params: Promise<{ loca
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
-                         <div className="inline-flex items-center gap-1 bg-white/80 border px-1.5 py-1 rounded-full text-sm">
-               <Link href={`/en`} className={`px-2 py-0.5 rounded-full ${locale === "en" ? "bg-black text-white" : "hover:bg-black/10"}`}>EN</Link>
-               <Link href={`/az`} className={`px-2 py-0.5 rounded-full ${locale === "az" ? "bg-black text-white" : "hover:bg-black/10"}`}>AZ</Link>
-               <Link href={`/ru`} className={`px-2 py-0.5 rounded-full ${locale === "ru" ? "bg-black text-white" : "hover:bg-black/10"}`}>RU</Link>
-             </div>
+            <div className="inline-flex items-center gap-1 bg-white/80 border px-1.5 py-1 rounded-full text-sm">
+              <Link href={`/en`} className={`px-2 py-0.5 rounded-full ${locale === "en" ? "bg-black text-white" : "hover:bg-black/10"}`}>EN</Link>
+              <Link href={`/az`} className={`px-2 py-0.5 rounded-full ${locale === "az" ? "bg-black text-white" : "hover:bg-black/10"}`}>AZ</Link>
+              <Link href={`/ru`} className={`px-2 py-0.5 rounded-full ${locale === "ru" ? "bg-black text-white" : "hover:bg-black/10"}`}>RU</Link>
+            </div>
           </div>
           <Sheet>
             <SheetTrigger asChild>
