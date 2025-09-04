@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Users, Rocket, Sparkles, Mail, MapPin, Phone, Instagram, Youtube, Menu } from "lucide-react";
+import { ArrowRight, Users, Rocket, Sparkles, Mail, MapPin, Phone, Instagram, Linkedin, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -13,6 +13,7 @@ import { SectionHeader } from "@/components/shared/SectionHeader";
 import { FeatureCard } from "@/components/shared/FeatureCard";
 import { useParams } from "next/navigation";
 import { MobileNav } from "@/components/shared/MobileNav";
+import { LocaleSwitcher } from "@/components/shared/LocaleSwitcher";
 import { useTranslations } from "next-intl";
 
 const BRAND = { cream: "#f5f2e1", navy: "#000080", gold: "#e38d1a" };
@@ -63,10 +64,7 @@ export default function AboutPage() {
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
-            <div className="inline-flex items-center gap-1 bg-white/80 border px-1.5 py-1 rounded-full text-sm">
-              <Link href={`/en`} className={`px-2 py-0.5 rounded-full ${locale === "en" ? "bg-black text-white" : "hover:bg-black/10"}`}>EN</Link>
-              <Link href={`/az`} className={`px-2 py-0.5 rounded-full ${locale === "az" ? "bg-black text-white" : "hover:bg-black/10"}`}>AZ</Link>
-            </div>
+            <LocaleSwitcher currentLocale={locale} />
           </div>
           <Sheet>
             <SheetTrigger asChild>
@@ -164,8 +162,8 @@ export default function AboutPage() {
               <Link href="https://www.instagram.com/mechackteam" aria-label="Instagram" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
                 <Instagram className="w-4 h-4" />
               </Link>
-              <Link href="#" aria-label="YouTube" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
-                <Youtube className="w-4 h-4" />
+              <Link href="https://www.linkedin.com/in/mechack-team-726b52258/" target="_blank" aria-label="LinkedIn" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
+                <Linkedin className="w-4 h-4" />
               </Link>
             </div>
           </div>

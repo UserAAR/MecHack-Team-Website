@@ -2,7 +2,7 @@ import { setRequestLocale } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
 
-const locales = ["en", "az"] as const;
+const locales = ["en", "az", "ru"] as const;
 
 export default async function LocaleLayout({
   children,

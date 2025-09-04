@@ -48,11 +48,11 @@ export default async function EventDetail({ params }: { params: Promise<{ locale
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
-            <select aria-label="Language" className="bg-white/80 border px-3 py-1.5 rounded-full text-sm">
-              <option value="en">EN</option>
-              <option value="az">AZ</option>
-              <option value="ru">RU</option>
-            </select>
+            <div className="inline-flex items-center gap-1 bg-white/80 border px-1.5 py-1 rounded-full text-sm">
+              <Link href={`/en`} className={`px-2 py-0.5 rounded-full ${locale === "en" ? "bg-black text-white" : "hover:bg-black/10"}`}>EN</Link>
+              <Link href={`/az`} className={`px-2 py-0.5 rounded-full ${locale === "az" ? "bg-black text-white" : "hover:bg-black/10"}`}>AZ</Link>
+              <Link href={`/ru`} className={`px-2 py-0.5 rounded-full ${locale === "ru" ? "bg-black text-white" : "hover:bg-black/10"}`}>RU</Link>
+            </div>
           </div>
           <Sheet>
             <SheetTrigger asChild>

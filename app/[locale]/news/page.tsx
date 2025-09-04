@@ -2,7 +2,7 @@ export const dynamic = "force-static";
 
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Menu, Instagram, Youtube, Mail, MapPin, Phone } from "lucide-react";
+import { Calendar, Menu, Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -10,11 +10,12 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { MobileNav } from "@/components/shared/MobileNav";
+import { LocaleSwitcher } from "@/components/shared/LocaleSwitcher";
 import { getTranslations } from "next-intl/server";
 
 const BRAND = { cream: "#f5f2e1", navy: "#000080", gold: "#e38d1a" };
 
-const locales = ["en", "az"] as const;
+const locales = ["en", "az", "ru"] as const;
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
@@ -74,10 +75,7 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
-            <div className="inline-flex items-center gap-1 bg-white/80 border px-1.5 py-1 rounded-full text-sm">
-              <Link href={`/en`} className={`px-2 py-0.5 rounded-full ${locale === "en" ? "bg-black text-white" : "hover:bg-black/10"}`}>EN</Link>
-              <Link href={`/az`} className={`px-2 py-0.5 rounded-full ${locale === "az" ? "bg-black text-white" : "hover:bg-black/10"}`}>AZ</Link>
-            </div>
+            <LocaleSwitcher currentLocale={locale} />
           </div>
           <Sheet>
             <SheetTrigger asChild>
@@ -140,8 +138,8 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
               <Link href="https://www.instagram.com/mechackteam" aria-label="Instagram" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
                 <Instagram className="w-4 h-4" />
               </Link>
-              <Link href="#" aria-label="YouTube" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
-                <Youtube className="w-4 h-4" />
+              <Link href="https://www.linkedin.com/in/mechack-team-726b52258/" target="_blank" aria-label="LinkedIn" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
+                <Linkedin className="w-4 h-4" />
               </Link>
             </div>
           </div>

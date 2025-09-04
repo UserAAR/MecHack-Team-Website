@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Home, Info, FolderGit2, Newspaper, Instagram, Youtube, Languages } from "lucide-react";
+import { ArrowRight, Home, Info, FolderGit2, Newspaper, Instagram, Linkedin, Languages } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 type Props = { locale: string };
@@ -47,6 +47,7 @@ export function MobileNav({ locale }: Props) {
           <div className="flex gap-2">
             <Link href={`/${"en"}`} className="px-3 py-1.5 rounded-full border text-sm hover:bg-black/[0.02]">EN</Link>
             <Link href={`/${"az"}`} className="px-3 py-1.5 rounded-full border text-sm hover:bg-black/[0.02]">AZ</Link>
+            <Link href={`/${"ru"}`} className="px-3 py-1.5 rounded-full border text-sm hover:bg-black/[0.02]">RU</Link>
           </div>
         </div>
       </div>
@@ -54,7 +55,7 @@ export function MobileNav({ locale }: Props) {
       <div className="px-6 py-4 bg-white border-t">
         <div className="flex items-center gap-3">
           <Link href="https://www.instagram.com/mechackteam" aria-label="Instagram" className="inline-flex p-2 rounded-full border hover:bg-black/[0.02]"><Instagram className="w-4 h-4" /></Link>
-          <Link href="#" aria-label="YouTube" className="inline-flex p-2 rounded-full border hover:bg-black/[0.02]"><Youtube className="w-4 h-4" /></Link>
+          <Link href="https://www.linkedin.com/in/mechack-team-726b52258/" target="_blank" aria-label="LinkedIn" className="inline-flex p-2 rounded-full border hover:bg-black/[0.02]"><Linkedin className="w-4 h-4" /></Link>
         </div>
         <div className="mt-3 text-xs text-neutral-500">© {new Date().getFullYear()} MecHack Qarabag</div>
       </div>
