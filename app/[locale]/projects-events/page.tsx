@@ -1,9 +1,7 @@
-"use client";
+export const dynamic = "force-static";
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { Calendar, MapPin, Mail, Phone, Instagram, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
@@ -11,80 +9,44 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { SectionHeader } from "@/components/shared/SectionHeader";
-import { useParams } from "next/navigation";
-import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 import { MobileNav } from "@/components/shared/MobileNav";
+import { getSupabaseStaticClient } from "@/lib/supabase/static";
 
 const BRAND = { cream: "#f5f2e1", navy: "#000080", gold: "#e38d1a" };
 
-const projectsFallback: Array<{ id: string; title: string; summary?: string; image?: string; slug?: string; }> = [];
+type ProjectRow = { id: string; title: string; summary: string | null; image_url: string | null; slug: string | null; published_at: string | null };
+type EventRow = { id: string; title: string; description: string | null; location: string | null; event_date: string | null; image_url: string | null; published_at: string | null };
 
-type ProjectRow = {
-  id: string;
-  title: string;
-  summary: string | null;
-  image_url: string | null;
-  slug: string | null;
-  published_at: string | null;
-};
+async function getData() {
+  const supabase = getSupabaseStaticClient();
+  const [projectsRes, eventsRes] = await Promise.all([
+    supabase
+      .from("projects")
+      .select("id, title, summary, image_url, slug, published_at")
+      .not("published_at", "is", null)
+      .order("published_at", { ascending: false }),
+    supabase
+      .from("events")
+      .select("id, title, description, location, event_date, image_url, published_at")
+      .not("published_at", "is", null)
+      .order("event_date", { ascending: true }),
+  ]);
+  return {
+    projects: (projectsRes.data ?? []) as ProjectRow[],
+    events: (eventsRes.data ?? []) as EventRow[],
+  };
+}
 
-type EventRow = {
-  id: string;
-  title: string;
-  description: string | null;
-  location: string | null;
-  event_date: string | null;
-  image_url: string | null;
-  published_at: string | null;
-};
-
-export default function ProjectsEventsPage() {
-  const [navSolid, setNavSolid] = useState(false);
-  const [rows, setRows] = useState<ProjectRow[]>([]);
-  const [eventRows, setEventRows] = useState<EventRow[]>([]);
-  useEffect(() => {
-    const onScroll = () => setNavSolid(window.scrollY > 10);
-    onScroll();
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const params = useParams<{ locale: string }>();
-  const locale = params?.locale ?? "en";
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const supabase = getSupabaseBrowserClient();
-        const [{ data: proj }, { data: evs }] = await Promise.all([
-          supabase
-            .from("projects")
-            .select("id, title, summary, image_url, slug, published_at")
-            .not("published_at", "is", null)
-            .order("published_at", { ascending: false })
-            .limit(24),
-          supabase
-            .from("events")
-            .select("id, title, description, location, event_date, image_url, published_at")
-            .not("published_at", "is", null)
-            .order("event_date", { ascending: true })
-            .limit(24),
-        ]);
-        setRows((proj as ProjectRow[]) ?? []);
-        setEventRows((evs as EventRow[]) ?? []);
-      } catch {
-        setRows([]);
-        setEventRows([]);
-      }
-    })();
-  }, []);
+export default async function ProjectsEventsPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const { projects, events } = await getData();
 
   return (
     <div className="min-h-screen bg-[var(--color-brand-cream)] text-[var(--color-brand-navy)]">
       {/* Header */}
-      <header className={`sticky top-0 z-50 transition-colors ${navSolid ? "bg-[rgba(245,242,225,0.9)] backdrop-blur" : "bg-transparent"}`}>
+      <header className="sticky top-0 z-50 transition-colors bg-[rgba(245,242,225,0.9)] backdrop-blur">
         <div className="container-max px-6 lg:px-10 py-3 flex items-center justify-between">
-          <Link href={`/${locale}`} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="flex items-center gap-3">
+          <Link href={`/${locale}`} className="flex items-center gap-3">
             <div className="relative w-10 h-10 rounded-full bg-transparent overflow-hidden grid place-items-center">
               <Image src="/logo/logo.jpg" alt="Logo" fill className="object-contain p-0.5" />
             </div>
@@ -104,11 +66,6 @@ export default function ProjectsEventsPage() {
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
-            <select aria-label="Language" className="bg-white/80 border px-3 py-1.5 rounded-full text-sm">
-              <option value="en">EN</option>
-              <option value="az">AZ</option>
-              <option value="ru">RU</option>
-            </select>
           </div>
           <Sheet>
             <SheetTrigger asChild>
@@ -124,12 +81,8 @@ export default function ProjectsEventsPage() {
       {/* Hero */}
       <section className="relative w-full overflow-hidden bg-white">
         <div className="container-max px-6 lg:px-10 py-16">
-          <motion.h1 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-4xl md:text-6xl font-extrabold">
-            Projects & Events
-          </motion.h1>
-          <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.05 }} className="mt-4 max-w-3xl text-lg text-neutral-700">
-            Discover our ongoing engineering projects and upcoming community events.
-          </motion.p>
+          <h1 className="text-4xl md:text-6xl font-extrabold">Projects & Events</h1>
+          <p className="mt-4 max-w-3xl text-lg text-neutral-700">Discover our ongoing engineering projects and upcoming community events.</p>
         </div>
       </section>
 
@@ -138,10 +91,10 @@ export default function ProjectsEventsPage() {
         <div className="container-max px-6 lg:px-10">
           <SectionHeader eyebrow="What we build" title="Featured Projects" />
           <div className="grid gap-6 md:grid-cols-3">
-            {(rows.length ? rows : projectsFallback as unknown as ProjectRow[]).map((p: ProjectRow) => (
+            {projects.map((p) => (
               <Card key={p.id} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-shadow">
                 <div className="relative h-48">
-                  <Image src={(p as ProjectRow).image_url ?? "/news/thumb.jpg"} alt={p.title} fill className="object-cover" />
+                  <Image src={p.image_url ?? "/news/thumb.jpg"} alt={p.title} fill className="object-cover" />
                 </div>
                 <CardHeader className="pb-0">
                   <CardTitle className="text-xl">{p.title}</CardTitle>
@@ -161,7 +114,7 @@ export default function ProjectsEventsPage() {
         <div className="container-max px-6 lg:px-10">
           <SectionHeader eyebrow="Get involved" title="Upcoming Events" />
           <div className="grid gap-6">
-            {eventRows.map((e) => (
+            {events.map((e) => (
               <div key={e.id} className="rounded-xl border border-black/5 bg-[var(--color-brand-cream)] p-5 flex flex-col md:flex-row md:items-center md:justify-between">
                 <div className="flex items-start gap-4">
                   <div className="shrink-0 rounded-lg bg-white px-3 py-2 text-sm font-semibold flex items-center gap-2 ring-1 ring-black/5">
@@ -181,7 +134,7 @@ export default function ProjectsEventsPage() {
                 </div>
               </div>
             ))}
-            {eventRows.length === 0 && (
+            {events.length === 0 && (
               <div className="text-sm text-neutral-600">No upcoming events.</div>
             )}
           </div>

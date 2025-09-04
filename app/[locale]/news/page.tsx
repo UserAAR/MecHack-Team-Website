@@ -1,3 +1,5 @@
+export const dynamic = "force-static";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, Menu, Instagram, Youtube, Mail, MapPin, Phone } from "lucide-react";
@@ -6,43 +8,23 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { MobileNav } from "@/components/shared/MobileNav";
 
 const BRAND = { cream: "#f5f2e1", navy: "#000080", gold: "#e38d1a" };
 
-type NewsRow = {
-  id: string;
-  title: string;
-  excerpt: string | null;
-  category: string | null;
-  image_url: string | null;
-  published_at: string | null;
-  slug: string | null;
-};
+type NewsItem = { id: string; title: string; excerpt: string; category: string; date: string; image: string; link: string };
 
-type NewsItem = {
-  id: string;
-  title: string;
-  excerpt: string;
-  category: string;
-  date: string;
-  image: string;
-  link: string;
-};
+type Row = { id: string; title: string; excerpt: string | null; category: string | null; image_url: string | null; published_at: string | null; slug: string | null };
 
-async function fetchNews(locale: string): Promise<NewsItem[]> {
-  const supabase = await getSupabaseServerClient();
-  const { data, error } = await supabase
+async function getNews(locale: string): Promise<NewsItem[]> {
+  const supabase = getSupabaseStaticClient();
+  const { data } = await supabase
     .from("news")
     .select("id, title, excerpt, category, image_url, published_at, slug")
     .not("published_at", "is", null)
-    .order("published_at", { ascending: false })
-    .limit(24);
-  if (error || !data) {
-    return [];
-  }
-  const rows = data as NewsRow[];
+    .order("published_at", { ascending: false });
+  const rows = (data ?? []) as Row[];
   return rows.map((n) => ({
     id: n.id,
     title: n.title,
@@ -56,7 +38,7 @@ async function fetchNews(locale: string): Promise<NewsItem[]> {
 
 export default async function NewsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  const items = await fetchNews(locale);
+  const items = await getNews(locale);
 
   return (
     <div className="min-h-screen bg-[var(--color-brand-cream)] text-[var(--color-brand-navy)]">
@@ -82,11 +64,6 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
-            <select aria-label="Language" className="bg-white/80 border px-3 py-1.5 rounded-full text-sm">
-              <option value="en">EN</option>
-              <option value="az">AZ</option>
-              <option value="ru">RU</option>
-            </select>
           </div>
           <Sheet>
             <SheetTrigger asChild>
@@ -99,7 +76,6 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
         </div>
       </header>
 
-      {/* Hero */}
       <section className="relative w-full overflow-hidden bg-white">
         <div className="container-max px-6 lg:px-10 py-16">
           <h1 className="text-4xl md:text-6xl font-extrabold">News</h1>
@@ -107,7 +83,6 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
         </div>
       </section>
 
-      {/* News List */}
       <section className="section-padding">
         <div className="container-max px-6 lg:px-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((n) => (
@@ -134,7 +109,6 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="bg-[var(--color-brand-navy)] text-[var(--color-brand-cream)]">
         <div className="h-1 w-full" style={{ background: `linear-gradient(90deg, ${BRAND.gold}, ${BRAND.navy})` }} />
         <div className="container-max px-6 lg:px-10 py-12 grid gap-10 md:grid-cols-4">

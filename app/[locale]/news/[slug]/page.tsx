@@ -1,21 +1,38 @@
+export const dynamic = "force-static";
+
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { Separator } from "@/components/ui/separator";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu, Instagram, Youtube, Mail, MapPin, Phone, ArrowLeft } from "lucide-react";
+import { MobileNav } from "@/components/shared/MobileNav";
+import { getSupabaseStaticClient } from "@/lib/supabase/static";
+
+const locales = ["en", "az", "ru"] as const;
+
+type NewsRow = { id: string; slug: string | null; published_at: string | null; title: string; excerpt: string | null; category: string | null; image_url: string | null; content: string | null };
+
+export async function generateStaticParams() {
+  const supabase = getSupabaseStaticClient();
+  const { data } = await supabase
+    .from("news")
+    .select("slug")
+    .not("published_at", "is", null);
+  const slugs = (data ?? []).map((r: any) => r.slug).filter(Boolean) as string[];
+  return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
+}
 
 export default async function NewsDetail({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
-  const supabase = await getSupabaseServerClient();
+  const supabase = getSupabaseStaticClient();
   const { data, error } = await supabase
     .from("news")
     .select("id, title, excerpt, content, category, image_url, published_at, slug")
     .eq("slug", slug)
-    .maybeSingle();
+    .maybeSingle<NewsRow>();
   if (error || !data || !data.published_at) return notFound();
 
   return (
@@ -43,27 +60,13 @@ export default async function NewsDetail({ params }: { params: Promise<{ locale:
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
-            <select aria-label="Language" className="bg-white/80 border px-3 py-1.5 rounded-full text-sm">
-              <option value="en">EN</option>
-              <option value="az">AZ</option>
-              <option value="ru">RU</option>
-            </select>
           </div>
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="outline" size="icon" className="md:hidden"><Menu className="w-5 h-5" /></Button>
             </SheetTrigger>
             <SheetContent side="right">
-              <div className="flex flex-col gap-4 mt-8">
-                <Link href={`/${locale}/about`}>About</Link>
-                <Link href={`/${locale}/projects-events`}>Programs</Link>
-                <Link href={`/${locale}/news`}>News</Link>
-                <select aria-label="Language" className="bg-white border px-3 py-1.5 rounded text-sm w-fit">
-                  <option value="en">EN</option>
-                  <option value="az">AZ</option>
-                  <option value="ru">RU</option>
-                </select>
-              </div>
+              <MobileNav locale={locale} />
             </SheetContent>
           </Sheet>
         </div>
@@ -78,7 +81,7 @@ export default async function NewsDetail({ params }: { params: Promise<{ locale:
           </div>
           <h1 className="text-3xl md:text-5xl font-extrabold">{data.title}</h1>
           <div className="mt-2 text-sm text-neutral-600 flex items-center gap-4">
-            <span>{new Date(data.published_at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "2-digit" })}</span>
+            <span>{new Date(data.published_at!).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "2-digit" })}</span>
             {data.category ? <span className="inline-flex items-center rounded-full bg-black/5 px-2.5 py-0.5 text-xs font-medium">{data.category}</span> : null}
           </div>
 
@@ -106,7 +109,7 @@ export default async function NewsDetail({ params }: { params: Promise<{ locale:
         </div>
       </article>
 
-      {/* Footer */}
+      {/* Footer (same as other pages) */}
       <footer className="bg-[var(--color-brand-navy)] text-[var(--color-brand-cream)]">
         <div className="h-1 w-full" style={{ background: `linear-gradient(90deg, var(--color-brand-gold), var(--color-brand-navy))` }} />
         <div className="container-max px-6 lg:px-10 py-12 grid gap-10 md:grid-cols-4">
