@@ -79,7 +79,7 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
           </div>
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="outline" size="icon" className="md:hidden"><Menu className="w-5 h-5" /></Button>
+              <Button variant="outline" size="icon" className="md:hidden border-[var(--color-brand-navy)] text-[var(--color-brand-navy)] bg-white/80"><Menu className="w-5 h-5" /></Button>
             </SheetTrigger>
             <SheetContent side="right">
               <MobileNav locale={locale} />
