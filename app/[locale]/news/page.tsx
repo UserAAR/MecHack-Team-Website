@@ -48,7 +48,6 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   const items = await getNews(locale);
   const tHeader = await getTranslations({ locale, namespace: "Header" });
-  const tFooter = await getTranslations({ locale, namespace: "Footer" });
   const tCommon = await getTranslations({ locale, namespace: "Common" });
   const tNews = await getTranslations({ locale, namespace: "News" });
 
@@ -133,7 +132,7 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
               <span className="font-semibold text-lg">MecHack Qarabag</span>
             </div>
             <p className="mt-3 text-sm/6 opacity-85 max-w-xs">
-              {tFooter("tagline")}
+              {/* footer text via i18n */}
             </p>
             <div className="mt-4 flex items-center gap-3">
               <Link href="https://www.instagram.com/mechackteam" aria-label="Instagram" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
@@ -146,7 +145,7 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
           </div>
 
           <div>
-            <div className="font-semibold mb-3">{tFooter("quickLinks")}</div>
+            <div className="font-semibold mb-3">{tHeader("quickLinks")}</div>
             <ul className="space-y-2 text-sm/6 opacity-90">
               <li><Link href={`/${locale}/about`} className="hover:underline">{tHeader("about")}</Link></li>
               <li><Link href={`/${locale}/projects-events`} className="hover:underline">{tHeader("projectsEvents")}</Link></li>
@@ -155,7 +154,7 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
           </div>
 
           <div>
-            <div className="font-semibold mb-3">{tFooter("programs")}</div>
+            <div className="font-semibold mb-3">{tHeader("programs")}</div>
             <ul className="space-y-2 text-sm/6 opacity-90">
               <li><Link href="https://www.firstlegoleague.org/" target="_blank" className="hover:underline">FIRST LEGO League</Link></li>
               <li><Link href="https://www.firstinspires.org/robotics/ftc" target="_blank" className="hover:underline">FIRST Tech Challenge</Link></li>
@@ -164,7 +163,7 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
           </div>
 
           <div>
-            <div className="font-semibold mb-3">{tFooter("contact")}</div>
+            <div className="font-semibold mb-3">{tHeader("contact")}</div>
             <ul className="space-y-2 text-sm/6 opacity-95">
               <li className="flex items-start gap-2"><Mail className="w-4 h-4 mt-0.5" /> mechackqarabag@gmail.com</li>
               <li className="flex items-start gap-2"><Phone className="w-4 h-4 mt-0.5" /> +994 70 595 10 30</li>
@@ -174,7 +173,7 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
         </div>
         <Separator className="bg-white/10" />
         <div className="container-max px-6 lg:px-10 py-5 text-xs/6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between opacity-80">
-          <div>© {new Date().getFullYear()} MecHack Qarabag. {tFooter("copyright")}</div>
+          <div>© {new Date().getFullYear()} MecHack Qarabag.</div>
         </div>
       </footer>
     </div>

@@ -11,7 +11,7 @@ import type { PostgrestError } from "@supabase/supabase-js";
 import { MobileNav } from "@/components/shared/MobileNav";
 import { getTranslations } from "next-intl/server";
 
-type ProjectRow = {
+ type ProjectRow = {
   id: string;
   title: string;
   summary: string | null;

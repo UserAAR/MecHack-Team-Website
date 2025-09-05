@@ -121,7 +121,7 @@ export default async function NewsDetail({ params }: { params: Promise<{ locale:
         </div>
       </article>
 
-      {/* Footer (same as other pages) */}
+      {/* Footer same as other pages */}
       <footer className="bg-[var(--color-brand-navy)] text-[var(--color-brand-cream)]">
         <div className="h-1 w-full" style={{ background: `linear-gradient(90deg, var(--color-brand-gold), var(--color-brand-navy))` }} />
         <div className="container-max px-6 lg:px-10 py-12 grid gap-10 md:grid-cols-4">

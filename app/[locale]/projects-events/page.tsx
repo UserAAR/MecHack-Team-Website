@@ -22,6 +22,7 @@ export function generateStaticParams() {
 }
 
 type ProjectRow = { id: string; title: string; summary: string | null; image_url: string | null; slug: string | null; published_at: string | null };
+
 type EventRow = { id: string; title: string; description: string | null; location: string | null; event_date: string | null; image_url: string | null; published_at: string | null };
 
 async function getData(locale: string) {

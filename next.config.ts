@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
+import path from "path";
 
 const nextConfig: NextConfig = {
   images: {
@@ -10,6 +11,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "yhpktscpwtalwffweafb.supabase.co" },
     ],
   },
+  outputFileTracingRoot: path.join(__dirname, ".."),
 };
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
