@@ -4,14 +4,19 @@ export function AdminHeader({
   title,
   subtitle,
   actions,
+  breadcrumb,
 }: {
   title: string;
   subtitle?: string;
   actions?: React.ReactNode;
+  breadcrumb?: React.ReactNode;
 }) {
   return (
-    <div className="relative mb-4">
-      <div className="flex items-start justify-between gap-3">
+    <div className="relative mb-5">
+      {breadcrumb ? (
+        <div className="text-xs text-muted-foreground mb-1">{breadcrumb}</div>
+      ) : null}
+      <div className="flex items-start justify-between gap-3 flex-wrap">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
           {subtitle ? (

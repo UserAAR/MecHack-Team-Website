@@ -88,6 +88,16 @@
   --radius-md: calc(var(--radius) - 2px);
 }
 
+/* Admin brand theme scope */
+.admin-theme {
+  --primary: var(--qbg-navy);
+  --primary-foreground: white;
+  --secondary: oklch(0.98 0 0);
+  --secondary-foreground: var(--qbg-navy);
+  --accent: color-mix(in oklch, var(--qbg-gold) 20%, white);
+  --accent-foreground: var(--qbg-navy);
+}
+
 html {
   scroll-behavior: smooth;
 }

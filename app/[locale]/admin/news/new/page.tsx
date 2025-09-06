@@ -12,6 +12,10 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AdminHeader } from "@/components/admin/AdminHeader";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Image from "@tiptap/extension-image";
+import { toast } from "sonner";
 
 function slugify(text: string) {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
@@ -25,6 +29,7 @@ const schema = z.object({
   slug: z.string().optional(),
   cover_url: z.string().url().optional(),
   publish: z.boolean().optional(),
+  scheduled_at: z.string().nullable().optional(),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -43,6 +48,13 @@ export default function AdminNewsCreate() {
     defaultValues: { publish: false },
   });
 
+  const editor = useEditor({
+    extensions: [StarterKit, Image],
+    content: "",
+    editorProps: { attributes: { class: "prose prose-sm max-w-none focus:outline-none min-h-[220px]" } },
+    onUpdate: ({ editor }) => setValue("content", editor.getHTML(), { shouldDirty: true }),
+  });
+
   async function onSubmit(values: FormValues) {
     setSaving(true);
     setError(null);
@@ -57,13 +69,16 @@ export default function AdminNewsCreate() {
         cover_url: values.cover_url ?? null,
         slug,
         published_at: values.publish ? new Date().toISOString() : null,
+        scheduled_at: values.scheduled_at ?? null,
         created_by: user?.id ?? null,
       };
       const { error } = await supabase.from("news").insert(payload).single();
       if (error) throw error;
+      toast.success("Created");
       router.replace(`/${locale}/admin/news`);
     } catch (e: any) {
       setError(e.message ?? "Save failed");
+      toast.error("Save failed");
     } finally {
       setSaving(false);
     }
@@ -96,8 +111,10 @@ export default function AdminNewsCreate() {
                 {errors.title ? <div className="text-xs text-red-600 mt-1">{errors.title.message}</div> : null}
               </div>
               <div>
-                <label className="block text-sm mb-1">Content (HTML allowed)</label>
-                <Textarea rows={10} {...register("content")} placeholder="Content" />
+                <label className="block text-sm mb-1">Content</label>
+                <div className="rounded-md border bg-background p-2">
+                  <EditorContent editor={editor} />
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -128,6 +145,11 @@ export default function AdminNewsCreate() {
               <div>
                 <label className="block text-sm mb-1">Cover image</label>
                 <ImageUploader value={coverUrl} onChange={(url) => setValue("cover_url", url, { shouldDirty: true })} folder="news" />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">Schedule publication</label>
+                <Input type="datetime-local" {...register("scheduled_at")} />
+                <div className="text-xs text-muted-foreground mt-1">Optional. If set, post will be published at scheduled time.</div>
               </div>
             </CardContent>
           </Card>
