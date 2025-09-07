@@ -1,355 +1,236 @@
-# Qarabag MecHack
+# Qarabag MecHack Website
 
-<div align="center">
-  <img src="/public/logo/logo.jpg" alt="Qarabag MecHack Logo" width="200" height="200" style="border-radius: 50%;" />
+<p align="center">
+  <img src="/public/logo/logo.jpg" alt="Qarabag MecHack Logo" width="160" height="160" />
+</p>
 
-  [![Next.js](https://img.shields.io/badge/Next.js-15.0.0-black)](https://nextjs.org/)
-  [![TypeScript](https://img.shields.io/badge/TypeScript-5.0.0-blue)](https://www.typescriptlang.org/)
-  [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0.0-38B2AC)](https://tailwindcss.com/)
-  [![Framer Motion](https://img.shields.io/badge/Framer_Motion-11.2.13-0055FF)](https://www.framer.com/motion/)
-  [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+<p align="center">
+  <a href="https://nextjs.org/" target="_blank"><img alt="Next.js" src="https://img.shields.io/badge/Next.js-15-black?logo=next.js" /></a>
+  <a href="https://www.typescriptlang.org/" target="_blank"><img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white" /></a>
+  <a href="https://tailwindcss.com/" target="_blank"><img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind%20CSS-4-38BDF8?logo=tailwindcss&logoColor=white" /></a>
+  <a href="https://www.framer.com/motion/" target="_blank"><img alt="Framer Motion" src="https://img.shields.io/badge/Framer%20Motion-11-0055FF?logo=framer" /></a>
+  <a href="https://supabase.com/" target="_blank"><img alt="Supabase" src="https://img.shields.io/badge/Supabase-Edge%20/%20SSR-3ECF8E?logo=supabase&logoColor=white" /></a>
+  <a href="https://next-intl-docs.vercel.app/" target="_blank"><img alt="next-intl" src="https://img.shields.io/badge/next--intl-4-000000" /></a>
+</p>
 
-  *Empowering youth through robotics, innovation, and community engagement*
-</div>
+> A modern, multilingual website for Qarabag MecHack robotics team. It blends performance, accessibility, and delightful motion design with a robust content workflow backed by Supabase.
 
-## 🌟 About
 
-**Qarabag MecHack** is the official website for FIRST Robotics Competition Team from Qarabag region. We are dedicated to inspiring and empowering youth through robotics education, STEM innovation, and community service. Our mission is to prepare the next generation of engineers, leaders, and problem-solvers for tomorrow's challenges.
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Architecture](#architecture)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+- [Environment Variables](#environment-variables)
+- [Project Structure](#project-structure)
+- [Internationalization (i18n)](#internationalization-i18n)
+- [Data & Supabase](#data--supabase)
+- [Styling & Design System](#styling--design-system)
+- [Animations](#animations)
+- [Quality & Tooling](#quality--tooling)
+- [Deployment](#deployment)
+- [Troubleshooting](#troubleshooting)
+- [License](#license)
 
-## ✨ Features
 
-### 🚀 Core Functionality
-- **Modern Web Design**: Responsive, mobile-first design with smooth animations
-- **Multi-language Support**: English, Azerbaijani (Azərbaycan), and Russian
-- **Dynamic Content**: Real-time updates for news, events, and achievements
-- **Interactive Programs**: Detailed information about FLL, FTC, and FRC programs
-- **Community Engagement**: News updates, sponsor showcases, and outreach events
+## Overview
+Qarabag MecHack Website is built with Next.js App Router and TypeScript. It supports English, Azerbaijani and Russian, uses Supabase for content and media, and delivers a premium user experience with subtle motion and polished UI components.
 
-### 🎨 Design & UX
-- **Brand Identity**: Custom color scheme with Qarabag MecHack branding
-- **Smooth Animations**: Framer Motion powered transitions and interactions
-- **Accessibility**: WCAG compliant design with proper ARIA labels
-- **Performance**: Optimized images and lazy loading for fast page loads
+- Multilingual content routing (`/[locale]/*`)
+- Server-first data (static/SSR) with Supabase
+- Admin experiences under `/[locale]/admin/*`
+- Optimized images, responsive layout, and accessible UI
 
-### 🔧 Technical Features
-- **TypeScript**: Full type safety and enhanced developer experience
-- **Component Library**: shadcn/ui components with custom styling
-- **SEO Optimized**: Meta tags, structured data, and performance optimizations
-- **PWA Ready**: Service worker support for offline functionality
 
-## 🛠️ Technology Stack
+## Features
+- UX & Content
+  - Multilingual pages (EN, AZ, RU) and locale-aware routing
+  - News, events, projects and media library integrations
+  - Responsive, mobile-first layout with shadcn/ui components
+  - SEO-friendly structure, clean URLs and metadata
+- Engineering
+  - Type-safe codebase with TS
+  - App Router (streaming, layouts, server actions ready)
+  - Next middleware for locale and Supabase session refresh
+  - Static generation with per-locale params
 
-### Frontend Framework
-- **Next.js 15** - React framework with App Router
-- **React 19** - UI library with concurrent features
-- **TypeScript 5** - Type-safe JavaScript
 
-### Styling & UI
-- **Tailwind CSS 4** - Utility-first CSS framework
-- **shadcn/ui** - Modern component library
-- **Radix UI** - Accessible, unstyled UI primitives
-- **Framer Motion** - Animation library
+## Architecture
+- App Router: `website/app` with `/[locale]` segment for localized routes
+- i18n via `next-intl` (middleware + request-time message loading)
+- Supabase clients:
+  - Static server client: `lib/supabase/static.ts`
+  - Browser client for client-side interactions: `lib/supabase/client.ts`
+- Middleware integrates `next-intl` and refreshes Supabase auth cookies per request
 
-### Internationalization
-- **next-intl 4** - Internationalization framework
-- **Multi-language Support**: EN, AZ, RU
 
-### Development Tools
-- **ESLint** - Code linting
-- **PostCSS** - CSS processing
-- **TypeScript** - Type checking
+## Tech Stack
+- Framework: Next.js 15, React 19, TypeScript 5
+- UI: Tailwind CSS 4, shadcn/ui, Radix Primitives
+- Motion: Framer Motion
+- Data: Supabase (Postgres + Storage)
+- i18n: next-intl 4
 
-## 📋 Prerequisites
 
-Before running this project, make sure you have the following installed:
+## Getting Started
+1) Requirements
+- Node.js 20 LTS (recommended) or >=18.17
+- npm 9+ (or pnpm/yarn/bun)
 
-- **Node.js** >= 18.0.0
-- **npm** >= 9.0.0 (or yarn/pnpm/bun)
-- **Git** >= 2.30.0
-
-## 🚀 Quick Start
-
-### 1. Clone the Repository
+2) Install
 ```bash
-git clone https://github.com/your-username/qarabag-mechack-website.git
-cd qarabag-mechack-website
-```
-
-### 2. Install Dependencies
-```bash
-# Using npm
+cd website
 npm install
-
-# Using yarn
-yarn install
-
-# Using pnpm
-pnpm install
-
-# Using bun
-bun install
 ```
 
-### 3. Environment Setup
-Create a `.env.local` file in the root directory:
+3) Configure environment
+Create `website/.env.local`:
 ```env
-# Add your environment variables here
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+# Optional
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
-### 4. Run Development Server
+4) Run
 ```bash
-# Using npm
 npm run dev
-
-# Using yarn
-yarn dev
-
-# Using pnpm
-pnpm dev
-
-# Using bun
-bun dev
+# open http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
-
-## 🏗️ Project Structure
-
-```
-qarabag-mechack-website/
-├── app/                    # Next.js App Router
-│   ├── [locale]/          # Dynamic locale routes
-│   │   ├── layout.tsx     # Root layout with locale
-│   │   └── page.tsx       # Home page
-│   ├── favicon.ico        # Site favicon
-│   ├── globals.css        # Global styles
-│   └── layout.tsx         # Root layout
-├── components/            # React components
-│   ├── shared/           # Shared components
-│   │   ├── BrandButton.tsx
-│   │   ├── FeatureCard.tsx
-│   │   └── SectionHeader.tsx
-│   └── ui/               # UI components (shadcn/ui)
-├── i18n/                 # Internationalization
-│   └── request.ts        # i18n configuration
-├── lib/                  # Utility libraries
-│   └── utils.ts          # Helper functions
-├── messages/             # Translation files
-│   ├── en.json          # English translations
-│   ├── az.json          # Azerbaijani translations
-│   └── ru.json          # Russian translations
-├── public/               # Static assets
-│   ├── intro/           # Video assets
-│   ├── logo/            # Logo files
-│   ├── news/            # News images
-│   ├── rules/           # Documentation
-│   └── sponsors/        # Sponsor logos
-├── styles/              # Additional styles
-├── middleware.ts        # Next.js middleware
-├── next.config.ts       # Next.js configuration
-├── package.json         # Dependencies and scripts
-├── tailwind.config.js   # Tailwind configuration
-├── tsconfig.json        # TypeScript configuration
-└── README.md           # Project documentation
-```
-
-## ⚙️ Configuration
-
-### Internationalization Setup
-
-The project uses `next-intl` for internationalization. Language files are located in the `messages/` directory:
-
-- `en.json` - English translations
-- `az.json` - Azerbaijani translations  
-- `ru.json` - Russian translations
-
-To add a new language:
-1. Create a new JSON file in `messages/`
-2. Update the `middleware.ts` to include the new locale
-3. Add translations for all keys
-
-### Styling Configuration
-
-The project uses Tailwind CSS with custom brand colors defined in CSS variables:
-
-```css
-:root {
-  --color-brand-cream: #f5f2e1;
-  --color-brand-navy: #000080;
-  --color-brand-gold: #e38d1a;
-}
-```
-
-### Component Library
-
-UI components are built using shadcn/ui. To add new components:
-
+5) Build & start
 ```bash
-npx shadcn-ui@latest add [component-name]
-```
-
-## 📝 Available Scripts
-
-```bash
-# Development
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
-npm run lint         # Run ESLint
-npm run type-check   # Run TypeScript type checking
-
-# Code Quality
-npm run lint:fix     # Fix ESLint errors
-npm run format       # Format code with Prettier
-```
-
-## 🌐 Deployment
-
-### Vercel (Recommended)
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Deploy automatically with zero configuration
-
-### Manual Deployment
-```bash
-# Build the application
 npm run build
-
-# Start production server
-npm run start
+npm start
 ```
 
-### Environment Variables for Production
+
+## Environment Variables
+The website uses only public Supabase keys on the client side. Put the following into `website/.env.local`:
 ```env
-NEXT_PUBLIC_SITE_URL=https://your-domain.com
-NEXT_PUBLIC_ANALYTICS_ID=your-analytics-id
-```
-
-## 🤝 Contributing
-
-We welcome contributions from the community! Here's how you can help:
-
-### Development Workflow
-1. **Fork** the repository
-2. **Clone** your fork: `git clone https://github.com/your-username/qarabag-mechack-website.git`
-3. **Create** a feature branch: `git checkout -b feature/your-feature-name`
-4. **Make** your changes
-5. **Test** thoroughly
-6. **Commit** with descriptive messages: `git commit -m "Add: feature description"`
-7. **Push** to your branch: `git push origin feature/your-feature-name`
-8. **Create** a Pull Request
-
-### Code Standards
-- Follow TypeScript best practices
-- Use descriptive component and variable names
-- Write meaningful commit messages
-- Ensure all tests pass
-- Follow the existing code style
-
-### Content Updates
-- News articles should be added to the `newsItems` array in `app/[locale]/page.tsx`
-- Sponsor logos should be placed in `public/sponsors/`
-- Team photos should be placed in `public/news/`
-
-## 📊 Performance
-
-The website is optimized for performance with:
-- **Next.js Image Optimization**: Automatic image optimization and lazy loading
-- **Code Splitting**: Automatic code splitting for faster page loads
-- **CSS Optimization**: Tailwind CSS purging and minification
-- **Font Optimization**: Next.js automatic font optimization
-- **Bundle Analysis**: Built-in bundle analyzer support
-
-## 🔧 Customization
-
-### Brand Colors
-Update brand colors in `app/globals.css`:
-
-```css
-:root {
-  --color-brand-cream: #your-color;
-  --color-brand-navy: #your-color;
-  --color-brand-gold: #your-color;
-}
-```
-
-### Adding New Programs
-Add new robotics programs to the `programs` array in `app/[locale]/page.tsx`:
-
-```typescript
-{
-  key: "new-program",
-  title: "New Program Name",
-  age: "Age Range",
-  color: "#hex-color",
-  link: "https://program-website.com",
-  tag: "TAG",
-  description: "Program description"
-}
-```
-
-### Content Management
-All content is managed through the main page component. Update:
-- Hero section text
-- Mission statements
-- News items
-- Sponsor information
-
-## 📞 Support & Contact
-
-- **Email**: info@qarabagmechack.org
-- **Website**: [qarabagmechack.org](https://qarabagmechack.org)
-- **Social Media**: 
-  - Instagram: [@qarabagmechack](https://instagram.com/qarabagmechack)
-  - YouTube: [Qarabag MecHack](https://youtube.com/@qarabagmechack)
-  - GitHub: [qarabag-mechack](https://github.com/qarabag-mechack)
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-### Sponsors & Partners
-We gratefully acknowledge the support of our sponsors and partners:
-- **BMU** (Bundesministerium für Umwelt)
-- **UNEC** (Azerbaijan State University of Economics)
-- **YAŞAT Foundation**
-- **Gençlər İdman Nazirliyi**
-- **Azercell**
-
-### Technologies & Tools
-- **FIRST Robotics** for the inspiration and framework
-- **Vercel** for hosting and deployment
-- **shadcn/ui** for the beautiful component library
-- **Framer** for the animation library
-
-### Community
-Special thanks to:
-- Our mentors and coaches
-- Team members and families
-- Local community supporters
-- FIRST Robotics volunteers
-
----
-
-<div align="center">
-  <p>Made with ❤️ by Qarabag MecHack Robotics Team</p>
-  <p>
-    <a href="#qarabag-mechack">Home</a> •
-    <a href="#about">About</a> •
-    <a href="#programs">Programs</a> •
-    <a href="#news">News</a>
-  </p>
-</div>
-
-## Environment variables
-
-Create a `.env.local` in `website/` with:
-
-```
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 ```
+Optional:
+```env
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
+```
+> Do not expose service role keys in the frontend.
+
+
+## Project Structure
+```
+website/
+├─ app/
+│  ├─ [locale]/
+│  │  ├─ admin/              # Admin interfaces
+│  │  ├─ news/               # News listing & details
+│  │  ├─ events/             # Events
+│  │  ├─ projects-events/    # Projects/Events hub
+│  │  ├─ layout.tsx          # Locale layout
+│  │  ├─ page.tsx            # Home (per-locale)
+│  │  └─ HomeClient.tsx      # Home client UI
+│  ├─ api/                   # Route handlers
+│  ├─ favicon.ico
+│  ├─ globals.css
+│  └─ layout.tsx             # Root layout
+├─ components/
+│  ├─ admin/                 # Admin UI pieces
+│  ├─ shared/                # Shared feature components
+│  └─ ui/                    # shadcn/ui
+├─ i18n/
+│  └─ request.ts             # i18n loader
+├─ lib/
+│  └─ supabase/              # Supabase clients
+├─ messages/                 # i18n translation files (en/az/ru)
+├─ public/                   # Static assets (logo, news, sponsors, video)
+├─ middleware.ts             # next-intl + Supabase cookies refresh
+├─ next.config.ts
+├─ package.json
+├─ postcss.config.mjs
+├─ tsconfig.json
+└─ README.md
+```
+
+
+## Internationalization (i18n)
+- Locales: `en`, `az`, `ru`
+- Middleware enforces locale prefix (`/en`, `/az`, `/ru`)
+- Messages are loaded in `i18n/request.ts` from `messages/<lng>.json`
+
+Add a new language:
+1. Create `messages/<lng>.json`
+2. Add the locale to `middleware.ts` locales array
+3. Provide translations for required namespaces/keys
+
+
+## Data & Supabase
+- Server/static fetches use `getSupabaseStaticClient()` from `lib/supabase/static.ts`
+- Client interactions use `getSupabaseBrowserClient()` in `lib/supabase/client.ts`
+- Auth cookies are refreshed in `middleware.ts`
+
+Schema
+- See `website/supabase.sql` for SQL helpers/tables (import via Supabase SQL Editor)
+- Common tables: `news`, `events`, `projects` (+ localized variants like `news_az`)
+
+Content rules
+- Visibility is controlled by `published_at` (filtering/sorting)
+- Displayed date for news is `created_at`
+
+
+## Styling & Design System
+- Tailwind CSS 4 with CSS variables for brand colors (see `app/globals.css`)
+- shadcn/ui + Radix primitives for accessible UI
+- Consistent spacing, rounded corners, and elevation tokens
+
+Theming
+- Brand palette is defined via CSS variables
+- Image domains are configured in `next.config.ts`
+
+
+## Animations
+- Framer Motion is used for subtle page and component transitions
+- Keep animations performant: avoid heavy layouts, prefer transform/opacity
+- Respect users with reduced motion preferences where applicable
+
+
+## Quality & Tooling
+Scripts
+```bash
+npm run dev       # Start dev server
+npm run build     # Production build
+npm run start     # Start production server
+npm run lint      # ESLint
+```
+
+Conventions
+- TypeScript-first; avoid `any` unless necessary
+- Small, focused components; prefer composition
+- Early returns, clear naming, minimal nesting
+- Accessibility: label interactive elements and ensure keyboard support
+
+
+## Deployment
+Vercel (recommended)
+1. Push to your repository
+2. Import project on Vercel
+3. Add environment variables
+4. Deploy
+
+Manual
+```bash
+npm run build
+npm start
+```
+
+
+## Troubleshooting
+- Blank images: ensure the image host is whitelisted in `next.config.ts`
+- i18n 404: verify locale prefixes and `middleware.ts` configuration
+- Supabase auth state not persisting: check cookies; middleware must run on page routes
+- Env vars not loading: confirm `.env.local` exists under `website/` and values are set
+
+
+## License
+MIT © Qarabag MecHack
