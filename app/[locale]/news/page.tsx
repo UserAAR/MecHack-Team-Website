@@ -22,14 +22,14 @@ export function generateStaticParams() {
 
 type NewsItem = { id: string; title: string; excerpt: string; category: string; date: string; image: string; link: string };
 
-type Row = { id: string; title: string; excerpt: string | null; category: string | null; image_url: string | null; published_at: string | null; slug: string | null };
+type Row = { id: string; title: string; excerpt: string | null; category: string | null; image_url: string | null; published_at: string | null; created_at: string | null; slug: string | null };
 
 async function getNews(locale: string): Promise<NewsItem[]> {
   const supabase = getSupabaseStaticClient();
   const table = locale === "az" ? "news_az" : "news";
   const { data } = await supabase
     .from(table)
-    .select("id, title, excerpt, category, image_url, published_at, slug")
+    .select("id, title, excerpt, category, image_url, published_at, created_at, slug")
     .not("published_at", "is", null)
     .order("published_at", { ascending: false });
   const rows = (data ?? []) as Row[];
@@ -38,7 +38,7 @@ async function getNews(locale: string): Promise<NewsItem[]> {
     title: n.title,
     excerpt: n.excerpt ?? "",
     category: n.category ?? "Update",
-    date: n.published_at ?? new Date().toISOString(),
+    date: n.created_at ?? new Date().toISOString(),
     image: n.image_url ?? "/news/thumb.jpg",
     link: `/${locale}/news/${n.slug ?? n.id}`,
   }));

@@ -15,7 +15,7 @@ import { getTranslations } from "next-intl/server";
 
 const locales = ["en", "az", "ru"] as const;
 
-type NewsRow = { id: string; slug: string | null; published_at: string | null; title: string; excerpt: string | null; category: string | null; image_url: string | null; content: string | null };
+type NewsRow = { id: string; slug: string | null; published_at: string | null; created_at: string | null; title: string; excerpt: string | null; category: string | null; image_url: string | null; content: string | null };
 
 export async function generateStaticParams() {
   const supabase = getSupabaseStaticClient();
@@ -41,7 +41,7 @@ export default async function NewsDetail({ params }: { params: Promise<{ locale:
   const table = locale === "az" ? "news_az" : "news";
   const { data, error } = await supabase
     .from(table)
-    .select("id, title, excerpt, content, category, image_url, published_at, slug")
+    .select("id, title, excerpt, content, category, image_url, published_at, created_at, slug")
     .eq("slug", slug)
     .maybeSingle<NewsRow>();
   if (error || !data || !data.published_at) return notFound();
@@ -93,7 +93,7 @@ export default async function NewsDetail({ params }: { params: Promise<{ locale:
           </div>
           <h1 className="text-3xl md:text-5xl font-extrabold">{data.title}</h1>
           <div className="mt-2 text-sm text-neutral-600 flex items-center gap-4">
-            <span>{new Date(data.published_at!).toLocaleDateString(locale, { year: "numeric", month: "long", day: "2-digit" })}</span>
+            <span>{new Date(data.created_at ?? data.published_at ?? new Date().toISOString()).toLocaleDateString(locale, { year: "numeric", month: "long", day: "2-digit" })}</span>
             {data.category ? <span className="inline-flex items-center rounded-full bg-black/5 px-2.5 py-0.5 text-xs font-medium">{data.category}</span> : null}
           </div>
 
