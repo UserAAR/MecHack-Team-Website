@@ -25,11 +25,17 @@ type Props = { locale: string; latestNews: LatestNewsItem[] };
 const BRAND = { cream: "#f5f2e1", navy: "#000080", gold: "#e38d1a" } as const;
 
 const sponsors = [
-  { id: 1, logo: "/sponsors/BMU-logo.svg.png" },
-  { id: 2, logo: "/sponsors/UNEC-logo-yeni-2020-1.png" },
-  { id: 3, logo: "/sponsors/1200px-YAŞAT_Fondu_loqosu-removebg-preview.png" },
-  { id: 4, logo: "/sponsors/gencleridmanlogo-removebg-preview.png" },
-  { id: 5, logo: "/sponsors/Azercell-Logo.wine_-1024x683.png" },
+  { id: 1, logo: "/sponsors/sp1.png" },
+  { id: 2, logo: "/sponsors/sp2.png" },
+  { id: 3, logo: "/sponsors/sp3.png" },
+  { id: 4, logo: "/sponsors/sp4.png" },
+  { id: 5, logo: "/sponsors/sp5.png" },
+  { id: 6, logo: "/sponsors/sp6.png" },
+  { id: 7, logo: "/sponsors/sp7.png" },
+  { id: 8, logo: "/sponsors/sp8.png" },
+  { id: 9, logo: "/sponsors/sp9.png" },
+  { id: 10, logo: "/sponsors/sp10.png" },
+  { id: 11, logo: "/sponsors/sp11.png" }
 ];
 
 export default function HomeClient({ locale, latestNews }: Props) {
