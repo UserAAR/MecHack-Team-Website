@@ -22,7 +22,7 @@ export type LatestNewsItem = { id: string; title: string; excerpt: string; categ
 
 type Props = { locale: string; latestNews: LatestNewsItem[] };
 
-const BRAND = { cream: "#f5f2e1", navy: "#000080", gold: "#e38d1a" } as const;
+const BRAND = { cream: "#f5f2e1", navy: "#000080",  gold: "#e38d1a" } as const;
 
 const sponsors = [
   { id: 1, logo: "/sponsors/sp1.png" },
