@@ -82,13 +82,13 @@
     "valuesEyebrow": "Bizi motivasiya edən",
     "valuesTitle": "Dəyərlərimiz",
     "values": {
-      "purpose": { "title": "Məqsəd", "text": "Biz robototexnika və STEM vasitəsilə gəncləri ilhamlandırır və gücləndiririk." },
-      "collaboration": { "title": "Əməkdaşlıq", "text": "Komanda işi, hörmət və paylaşım mədəniyyəti ilə birlikdə inkişaf edirik." },
-      "innovation": { "title": "Yenilik", "text": "Tez-tez sınaqdan keçirir, təcrübə edir və yaradıcılığı alqışlayırıq." }
+      "purpose": { "title": "Məqsədimiz", "text": "Məqsəd Mechack yeni nəsil yenilikçilər və problem həll edənlər yaratmaq üçün mövcuddur. Biz gənc beyinləri elm, texnologiya, mühəndislik və riyaziyyatı araşdırmağa ruhlandırır, eyni zamanda komanda işi və liderlik bacarıqlarını inkişaf etdiririk." },
+      "collaboration": { "title": "Vizyonumuz", "text": "Ölkəmizin mədəniyyətinə elmi və texnoloji yenilikləri gətirmək, yeni vərdişlər və yeni baxış bucaqları formalaşdırmaq. Elm və texnologiyanın inkişaf etdiyi bir cəmiyyət yaratmaq." },
+      "innovation": { "title": "Missiyamız", "text": "Mechacak-ın missiyası, gənclərdə bacarıqları, özünəinamı və dözümlülüyü inkişaf etdirərək daha yaxşı bir dünya qurmağa yönəlmiş, çevredici robototexnika proqramlarını təmin etmək və yaymaqdır. Bu missiya FIRST təşkilatının məqsədindən ilhamlanmışdır." }
     },
     "storyTitle": "Hekayəmiz",
-    "storyP1": "Seminarlardan yarışlara qədər, marağı və texniki mükəmməlliyi formalaşdırırıq. Üzvlərimiz mexaniki dizayn, proqramlaşdırma, elektronika və liderliyi real yarışan robotlar quraraq öyrənirlər.",
-    "storyP2": "Meydandan kənarda isə, məktəblərlə və tərəfdaşlarla əməkdaşlıq edir, kiçik yaşlılara mentorluq edir və icmamızda STEM ekosistemini böyütmək üçün bilikləri paylaşırıq.",
+    "storyP1": "Biz gələcəyi qururuq! Biz Azərbaycanın ilk FIRST komandasıyıq! Üç il əvvəl elm, texnologiya və mühəndislik sahələrində maarifləndirmə yaratmaq üçün böyük bir missiyaya başladıq! Bu, sadəcə bir komanda yaratmaq deyildi; biz ölkəmizin gəncləri üçün yeni bir yol açdıq! 100-dən çox FIRST üzvünü yetişdirdik! Biz yalnız bilik paylaşmadıq; düşüncə tərzini dəyişdik! Gənclərə elmin və texnologiyanın gücünü tanıtdıq, onlara yaratmağı, qurmağı və yenilik etməyi öyrətdik. İndi Azərbaycanın müxtəlif bölgələrindən gənc beyinlər öz ideyaları ilə gələcəyi formalaşdırır. Biz sadəcə bir komanda deyilik — biz FRC-nin pioneriyik! Bu vizyonu yayırıq və daha çox gənci bu hərəkatda iştirak etməyə ruhlandırırıq! Amma bu yalnız başlanğıcdır! Biz bu inkişafı ölkənin hər bir guşəsinə çatdırmaq istəyirik! Daha çox gənc elm və mühəndisliklə tanış olmalıdır və sizin dəstəyinizlə Azərbaycanı FRC regional mərkəzinə çevirə bilərik! Biz toxumu əkdik — indi onu birlikdə böyütməyin vaxtıdır!  ",
+    "storyP2": "",
     "partnerTitle": "Bizimlə əməkdaş olun",
     "partnerText": "Təsirimizi genişləndirmək üçün tərəfdaşları, mentorları və dəstəkçiləri məmnuniyyətlə qarşılayırıq.",
     "emailUs": "Bizə e-poçt göndərin",

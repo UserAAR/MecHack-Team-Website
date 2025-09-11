@@ -82,13 +82,13 @@
     "valuesEyebrow": "What drives us",
     "valuesTitle": "Our Values",
     "values": {
-      "purpose": { "title": "Purpose", "text": "We aim to inspire and empower youth through robotics and STEM." },
-      "collaboration": { "title": "Collaboration", "text": "We thrive together with teamwork, respect and shared learning." },
-      "innovation": { "title": "Innovation", "text": "We iterate fast, experiment often and celebrate creativity." }
+      "purpose": { "title": "Purpose", "text": "Purpose Mechack exists to create a new generation of innovators and problem-solvers. We inspire young minds to explore science, technology, engineering, and math while building teamwork and leadership skills." },
+      "collaboration": { "title": "Vision", "text": "To bring scientific and technological innovations to the culture of our country, to form new habits and new perspectives. To create a society where science and technology thrive." },
+      "innovation": { "title": "Mission", "text": "The mission of Mechacak is to provide and disseminate transformative robotics programs that build skills, confidence, and resilience in young people to build a better world, modeled after the mission of FIRST." }
     },
     "storyTitle": "Our Story",
-    "storyP1": "From workshops to competitions, we cultivate curiosity and technical excellence. Our members learn mechanical design, programming, electronics and leadership by building real robots that compete and inspire.",
-    "storyP2": "Beyond the field, we mentor younger students, collaborate with schools and partners, and share knowledge to grow the STEM ecosystem across our community.",
+    "storyP1": "We Are Building the Future! We are Azerbaijan's first FIRST team! Three years ago, we embarked on a great mission—to create enlightenment in the fields of science, technology, and engineering! This was not just about forming a team; we paved a new path for the youth of our country! We have trained more than 100 FIRST members! We didn't just share knowledge; we changed mindsets! We introduced young people to the power of science and technology, teaching them how to create, build, and innovate. Now, young minds from different regions of Azerbaijan are shaping the future with their ideas. We are not just a team—we are the pioneers of FRC! We are spreading this vision and inspiring more young people to join this movement! But this is just the beginning! We want to expand this growth to every corner of the country! More young people should be introduced to science and engineering, and with your support, we can turn Azerbaijan into an FRC regional hub! We planted the seed—now it's time to grow it together!",
+    "storyP2": "",
     "partnerTitle": "Partner with us",
     "partnerText": "We welcome partnerships, mentors and supporters to expand our impact.",
     "emailUs": "Email us",
