@@ -10,10 +10,11 @@ import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { getTranslations } from "next-intl/server";
 import { SiteHeader } from "@/components/shared/SiteHeader";
 import { formatDateUTC } from "@/lib/utils";
+import { ImageCarousel } from "@/components/shared/ImageCarousel";
 
 const locales = ["en", "az", "ru"] as const;
 
-type NewsRow = { id: string; slug: string | null; published_at: string | null; created_at: string | null; title: string; excerpt: string | null; category: string | null; image_url: string | null; content: string | null };
+type NewsRow = { id: string; slug: string | null; published_at: string | null; created_at: string | null; title: string; excerpt: string | null; category: string | null; image_url: string | null; images?: string[] | null; content: string | null };
 
 export async function generateStaticParams() {
   const supabase = getSupabaseStaticClient();
@@ -39,12 +40,13 @@ export default async function NewsDetail({ params }: { params: Promise<{ locale:
   const table = locale === "az" ? "news_az" : "news";
   const { data, error } = await supabase
     .from(table)
-    .select("id, title, excerpt, content, category, image_url, published_at, created_at, slug")
+    .select("id, title, excerpt, content, category, image_url, images, published_at, created_at, slug")
     .eq("slug", slug)
     .maybeSingle<NewsRow>();
   if (error || !data || !data.published_at) return notFound();
 
   const displayDate = data.created_at ?? data.published_at ?? "1970-01-01T00:00:00.000Z";
+  const images = (data.images && data.images.length > 0) ? data.images : [data.image_url ?? "/news/thumb.jpg"]; 
 
   return (
     <div className="min-h-screen bg-[var(--color-brand-cream)] text-[var(--color-brand-navy)]">
@@ -65,9 +67,8 @@ export default async function NewsDetail({ params }: { params: Promise<{ locale:
           </div>
 
           <div className="mt-8 grid gap-6 md:grid-cols-12">
-            <div className="relative md:col-span-5 lg:col-span-6 rounded-xl overflow-hidden ring-1 ring-black/5 bg-black min-h-64">
-              <Image src={data.image_url ?? "/news/thumb.jpg"} alt={data.title} fill className="object-cover opacity-95" />
-              <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,.25),rgba(0,0,0,0))]" />
+            <div className="md:col-span-5 lg:col-span-6">
+              <ImageCarousel images={images} alt={data.title} aspectClassName="h-64 md:h-80" />
             </div>
             <div className="md:col-span-7 lg:col-span-6">
               {data.excerpt ? (
