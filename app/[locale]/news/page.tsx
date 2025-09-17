@@ -2,16 +2,14 @@ export const dynamic = "force-static";
 
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Menu, Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react";
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Calendar, Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
-import { MobileNav } from "@/components/shared/MobileNav";
-import { LocaleSwitcher } from "@/components/shared/LocaleSwitcher";
 import { getTranslations } from "next-intl/server";
+import { SiteHeader } from "@/components/shared/SiteHeader";
+import { formatDateUTC } from "@/lib/utils";
 
 const BRAND = { cream: "#f5f2e1", navy: "#000080", gold: "#e38d1a" };
 
@@ -38,7 +36,7 @@ async function getNews(locale: string): Promise<NewsItem[]> {
     title: n.title,
     excerpt: n.excerpt ?? "",
     category: n.category ?? "Update",
-    date: n.created_at ?? new Date().toISOString(),
+    date: n.created_at ?? n.published_at ?? "1970-01-01T00:00:00.000Z",
     image: n.image_url ?? "/news/thumb.jpg",
     link: `/${locale}/news/${n.slug ?? n.id}`,
   }));
@@ -53,41 +51,10 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
 
   return (
     <div className="min-h-screen bg-[var(--color-brand-cream)] text-[var(--color-brand-navy)]">
-      <header className="sticky top-0 z-50 transition-colors bg-[rgba(245,242,225,0.9)] backdrop-blur">
-        <div className="container-max px-6 lg:px-10 py-3 flex items-center justify-between">
-          <Link href={`/${locale}`} className="flex items-center gap-3">
-            <div className="relative w-10 h-10 rounded-full bg-transparent overflow-hidden grid place-items-center">
-              <Image src="/logo/logo.jpg" alt="Logo" fill className="object-contain p-0.5" />
-            </div>
-            <span className="font-semibold tracking-wide">MecHack Qarabag</span>
-          </Link>
-          <div className="hidden md:flex items-center gap-6">
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/about`}>{tHeader("about")}</NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/projects-events`}>{tHeader("projectsEvents")}</NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/news`}>{tHeader("news")}</NavigationMenuLink>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-            <LocaleSwitcher currentLocale={locale} />
-          </div>
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline" size="icon" className="md:hidden border-[var(--color-brand-navy)] text-[var(--color-brand-navy)] bg-white/80"><Menu className="w-5 h-5" /></Button>
-            </SheetTrigger>
-            <SheetContent side="right">
-              <MobileNav locale={locale} />
-            </SheetContent>
-          </Sheet>
-        </div>
-      </header>
+      {/* Header */}
+      <SiteHeader locale={locale} />
 
+      {/* Hero */}
       <section className="relative w-full overflow-hidden bg-white">
         <div className="container-max px-6 lg:px-10 py-16">
           <h1 className="text-4xl md:text-6xl font-extrabold">{tHeader("news")}</h1>
@@ -109,7 +76,7 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
                 <p className="mt-2 text-sm text-neutral-700 line-clamp-2">{n.excerpt}</p>
                 <div className="mt-3 flex items-center gap-2 text-xs text-neutral-500">
                   <Calendar className="w-3.5 h-3.5" />
-                  <span>{new Date(n.date).toLocaleDateString(locale, { year: "numeric", month: "short", day: "2-digit" })}</span>
+                  <span>{formatDateUTC(n.date, locale, { year: "numeric", month: "short", day: "2-digit" })}</span>
                 </div>
                 <Button asChild variant="link" className="px-0 text-[var(--color-brand-gold)]"><Link href={n.link}>{tNews("readMore")}</Link></Button>
               </div>
@@ -140,6 +107,9 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
               </Link>
               <Link href="https://www.linkedin.com/in/mechack-team-726b52258/" target="_blank" aria-label="LinkedIn" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
                 <Linkedin className="w-4 h-4" />
+              </Link>
+              <Link href="https://www.youtube.com/@Qaraba%C4%9FMechack" target="_blank" aria-label="YouTube" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.002 3.002 0 0 0-2.113-2.126C19.585 3.5 12 3.5 12 3.5s-7.585 0-9.385.56A3.002 3.002 0 0 0 .502 6.186 31.54 31.54 0 0 0 0 12a31.54 31.54 0 0 0 .502 5.814 3.002 3.002 0 0 0 2.113 2.126C4.415 20.5 12 20.5 12 20.5s7.585 0 9.385-.56a3.002 3.002 0 0 0 2.113-2.126A31.54 31.54 0 0 0 24 12a31.54 31.54 0 0 0-.502-5.814ZM9.75 15.5v-7l6 3.5-6 3.5Z"/></svg>
               </Link>
             </div>
           </div>

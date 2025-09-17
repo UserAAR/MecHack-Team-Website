@@ -4,19 +4,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Globe2, Newspaper, Users, Rocket, Sparkles, Menu, Mail, MapPin, Phone, Instagram, Linkedin, Calendar } from "lucide-react";
+import { ArrowRight, Globe2, Newspaper, Users, Rocket, Sparkles, Mail, MapPin, Phone, Instagram, Linkedin, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { BrandButton } from "@/components/shared/BrandButton";
 import { FeatureCard } from "@/components/shared/FeatureCard";
-import { MobileNav } from "@/components/shared/MobileNav";
-import { LocaleSwitcher } from "@/components/shared/LocaleSwitcher";
 import { useTranslations } from "next-intl";
+import { SiteHeader } from "@/components/shared/SiteHeader";
+import { formatDateUTC } from "@/lib/utils";
 
 export type LatestNewsItem = { id: string; title: string; excerpt: string; category: string; date: string; image: string; link: string };
 
@@ -47,13 +45,6 @@ export default function HomeClient({ locale, latestNews }: Props) {
   const tSponsors = useTranslations("Sponsors");
   const tFooter = useTranslations("Footer");
   const tCommon = useTranslations("Common");
-  const [navSolid, setNavSolid] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setNavSolid(window.scrollY > 10);
-    onScroll();
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   const missions = [
     { icon: <Rocket className="w-6 h-6" />, title: tMission("items.robotics.title"), text: tMission("items.robotics.text") },
@@ -73,40 +64,7 @@ export default function HomeClient({ locale, latestNews }: Props) {
   return (
     <div className="min-h-screen bg-[var(--color-brand-cream)] text-[var(--color-brand-navy)]">
       {/* Header */}
-      <header className={`sticky top-0 z-50 transition-colors ${navSolid ? "bg-[rgba(245,242,225,0.9)] backdrop-blur" : "bg-transparent"}`}>
-        <div className="container-max px-6 lg:px-10 py-3 flex items-center justify-between">
-          <Link href={`/${locale}`} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="flex items-center gap-3">
-            <div className="relative w-10 h-10 rounded-full bg-transparent overflow-hidden grid place-items-center">
-              <Image src="/logo/logo.jpg" alt="Logo" fill className="object-contain p-0.5" />
-            </div>
-            <span className="font-semibold tracking-wide">MecHack Qarabag</span>
-          </Link>
-          <div className="hidden md:flex items-center gap-6">
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/about`}>{tHeader("about")}</NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/projects-events`}>{tHeader("projectsEvents")}</NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/news`}>{tHeader("news")}</NavigationMenuLink>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-            <LocaleSwitcher currentLocale={locale} />
-          </div>
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline" size="icon" className="md:hidden"><Menu className="w-5 h-5" /></Button>
-            </SheetTrigger>
-            <SheetContent side="right">
-              <MobileNav locale={locale} />
-            </SheetContent>
-          </Sheet>
-        </div>
-      </header>
+      <SiteHeader locale={locale} transparentOnTop />
 
       {/* Hero */}
       <section className="relative h-[92vh] w-full overflow-hidden">
@@ -183,7 +141,7 @@ export default function HomeClient({ locale, latestNews }: Props) {
                     <p className="text-sm text-neutral-700 line-clamp-2">{n.excerpt}</p>
                     <div className="mt-3 flex items-center gap-2 text-xs text-neutral-500">
                       <Calendar className="w-3.5 h-3.5" />
-                      <span>{new Date(n.date).toLocaleDateString(locale, { year: "numeric", month: "short", day: "2-digit" })}</span>
+                      <span>{formatDateUTC(n.date, locale, { year: "numeric", month: "short", day: "2-digit" })}</span>
                     </div>
                     <div className="mt-auto">
                       <Button asChild variant="link" className="px-0 text-[var(--color-brand-gold)]"><Link href={n.link}>{tCommon("readMore")}</Link></Button>
@@ -235,6 +193,9 @@ export default function HomeClient({ locale, latestNews }: Props) {
               <Link href="https://www.linkedin.com/in/mechack-team-726b52258/" target="_blank" aria-label="LinkedIn" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
                 <Linkedin className="w-4 h-4" />
               </Link>
+              <Link href="https://www.youtube.com/@Qaraba%C4%9FMechack" target="_blank" aria-label="YouTube" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.002 3.002 0 0 0-2.113-2.126C19.585 3.5 12 3.5 12 3.5s-7.585 0-9.385.56A3.002 3.002 0 0 0 .502 6.186 31.54 31.54 0 0 0 0 12a31.54 31.54 0 0 0 .502 5.814 3.002 3.002 0 0 0 2.113 2.126C4.415 20.5 12 20.5 12 20.5s7.585 0 9.385-.56a3.002 3.002 0 0 0 2.113-2.126A31.54 31.54 0 0 0 24 12a31.54 31.54 0 0 0-.502-5.814ZM9.75 15.5v-7l6 3.5-6 3.5Z"/></svg>
+              </Link>
             </div>
           </div>
 
@@ -250,9 +211,9 @@ export default function HomeClient({ locale, latestNews }: Props) {
           <div>
             <div className="font-semibold mb-3">{tFooter("programs")}</div>
             <ul className="space-y-2 text-sm/6 opacity-90">
-              <li><Link href="https://www.firstlegoleague.org/" target="_blank" className="hover:underline">{tPrograms("items.fll.title")}</Link></li>
-              <li><Link href="https://www.firstinspires.org/robotics/ftc" target="_blank" className="hover:underline">{tPrograms("items.ftc.title")}</Link></li>
-              <li><Link href="https://www.firstinspires.org/robotics/frc" target="_blank" className="hover:underline">{tPrograms("items.frc.title")}</Link></li>
+              <li><Link href="https://www.firstlegoleague.org/" target="_blank" className="hover:underline">FIRST LEGO League</Link></li>
+              <li><Link href="https://www.firstinspires.org/robotics/ftc" target="_blank" className="hover:underline">FIRST Tech Challenge</Link></li>
+              <li><Link href="https://www.firstinspires.org/robotics/frc" target="_blank" className="hover:underline">FIRST Robotics Competition</Link></li>
             </ul>
           </div>
 
@@ -267,7 +228,7 @@ export default function HomeClient({ locale, latestNews }: Props) {
         </div>
         <Separator className="bg-white/10" />
         <div className="container-max px-6 lg:px-10 py-5 text-xs/6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between opacity-80">
-          <div>© {new Date().getFullYear()} MecHack Qarabag. {tFooter("copyright")}</div>
+          <div>© {new Date().getFullYear()} MecHack Qarabag.</div>
         </div>
       </footer>
 

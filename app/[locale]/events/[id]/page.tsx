@@ -3,12 +3,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { Separator } from "@/components/ui/separator";
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu, Instagram, Linkedin, Mail, MapPin, Phone, ArrowLeft, Calendar, MapPin as Pin } from "lucide-react";
-import { MobileNav } from "@/components/shared/MobileNav";
+import { Instagram, Linkedin, Mail, MapPin, Phone, ArrowLeft, Calendar, MapPin as Pin } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { SiteHeader } from "@/components/shared/SiteHeader";
+import { formatDateUTC } from "@/lib/utils";
 
 export default async function EventDetail({ params }: { params: Promise<{ locale: string; id: string }> }) {
   const { locale, id } = await params;
@@ -24,47 +23,12 @@ export default async function EventDetail({ params }: { params: Promise<{ locale
     .maybeSingle();
   if (error || !data || !data.published_at) return notFound();
 
+  const displayDate = data.event_date ?? data.published_at ?? "1970-01-01T00:00:00.000Z";
+
   return (
     <div className="min-h-screen bg-[var(--color-brand-cream)] text-[var(--color-brand-navy)]">
       {/* Header */}
-      <header className="sticky top-0 z-50 transition-colors bg-[rgba(245,242,225,0.9)] backdrop-blur">
-        <div className="container-max px-6 lg:px-10 py-3 flex items-center justify-between">
-          <Link href={`/${locale}`} className="flex items-center gap-3">
-            <div className="relative w-10 h-10 rounded-full bg-transparent overflow-hidden grid place-items-center">
-              <Image src="/logo/logo.jpg" alt="Logo" fill className="object-contain p-0.5" />
-            </div>
-            <span className="font-semibold tracking-wide">MecHack Qarabag</span>
-          </Link>
-          <div className="hidden md:flex items-center gap-6">
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/about`}>{tHeader("about")}</NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/projects-events`}>{tHeader("projectsEvents")}</NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/news`}>{tHeader("news")}</NavigationMenuLink>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-            <div className="inline-flex items-center gap-1 bg-white/80 border px-1.5 py-1 rounded-full text-sm">
-              <Link href={`/en`} className={`px-2 py-0.5 rounded-full ${locale === "en" ? "bg-black text-white" : "hover:bg-black/10"}`}>EN</Link>
-              <Link href={`/az`} className={`px-2 py-0.5 rounded-full ${locale === "az" ? "bg-black text-white" : "hover:bg-black/10"}`}>AZ</Link>
-              <Link href={`/ru`} className={`px-2 py-0.5 rounded-full ${locale === "ru" ? "bg-black text-white" : "hover:bg-black/10"}`}>RU</Link>
-            </div>
-          </div>
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline" size="icon" className="md:hidden"><Menu className="w-5 h-5" /></Button>
-            </SheetTrigger>
-            <SheetContent side="right">
-              <MobileNav locale={locale} />
-            </SheetContent>
-          </Sheet>
-        </div>
-      </header>
+      <SiteHeader locale={locale} />
 
       <article>
         <div className="container-max px-6 lg:px-10 py-10">
@@ -83,7 +47,7 @@ export default async function EventDetail({ params }: { params: Promise<{ locale
             <div className="md:col-span-7 lg:col-span-6">
               <div className="flex items-center gap-3 text-sm text-neutral-700">
                 <Calendar className="w-4 h-4" />
-                <span>{new Date(data.event_date ?? data.published_at ?? new Date().toISOString()).toLocaleDateString(locale, { year: "numeric", month: "long", day: "2-digit" })}</span>
+                <span>{formatDateUTC(displayDate, locale, { year: "numeric", month: "long", day: "2-digit" })}</span>
                 <Pin className="w-4 h-4" />
                 <span>{data.location}</span>
               </div>
@@ -115,6 +79,9 @@ export default async function EventDetail({ params }: { params: Promise<{ locale
             <div className="mt-4 flex items-center gap-3">
               <Link href="#" aria-label="Instagram" className="inline-flex p-2 rounded-full border hover:bg-black/[0.02]"><Instagram className="w-4 h-4" /></Link>
               <Link href="https://www.linkedin.com/in/mechack-team-726b52258/" target="_blank" aria-label="LinkedIn" className="inline-flex p-2 rounded-full border hover:bg-black/[0.02]"><Linkedin className="w-4 h-4" /></Link>
+              <Link href="https://www.youtube.com/@Qaraba%C4%9FMechack" target="_blank" aria-label="YouTube" className="inline-flex p-2 rounded-full border hover:bg-black/[0.02]">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.002 3.002 0 0 0-2.113-2.126C19.585 3.5 12 3.5 12 3.5s-7.585 0-9.385.56A3.002 3.002 0 0 0 .502 6.186 31.54 31.54 0 0 0 0 12a31.54 31.54 0 0 0 .502 5.814 3.002 3.002 0 0 0 2.113 2.126C4.415 20.5 12 20.5 12 20.5s7.585 0 9.385-.56a3.002 3.002 0 0 0 2.113-2.126A31.54 31.54 0 0 0 24 12a31.54 31.54 0 0 0-.502-5.814ZM9.75 15.5v-7l6 3.5-6 3.5Z"/></svg>
+              </Link>
             </div>
           </div>
 

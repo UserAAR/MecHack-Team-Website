@@ -15,6 +15,7 @@ import { useParams } from "next/navigation";
 import { MobileNav } from "@/components/shared/MobileNav";
 import { LocaleSwitcher } from "@/components/shared/LocaleSwitcher";
 import { useTranslations } from "next-intl";
+import { SiteHeader } from "@/components/shared/SiteHeader";
 
 const BRAND = { cream: "#f5f2e1", navy: "#000080", gold: "#e38d1a" };
 
@@ -42,40 +43,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-[var(--color-brand-cream)] text-[var(--color-brand-navy)]">
       {/* Header */}
-      <header className={`sticky top-0 z-50 transition-colors ${navSolid ? "bg-[rgba(245,242,225,0.9)] backdrop-blur" : "bg-transparent"}`}>
-        <div className="container-max px-6 lg:px-10 py-3 flex items-center justify-between">
-          <Link href={`/${locale}`} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="flex items-center gap-3">
-            <div className="relative w-10 h-10 rounded-full bg-transparent overflow-hidden grid place-items-center">
-              <Image src="/logo/logo.jpg" alt="Logo" fill className="object-contain p-0.5" />
-            </div>
-            <span className="font-semibold tracking-wide">MecHack Qarabag</span>
-          </Link>
-          <div className="hidden md:flex items-center gap-6">
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/about`}>{tHeader("about")}</NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/projects-events`}>{tHeader("projectsEvents")}</NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink href={`/${locale}/news`}>{tHeader("news")}</NavigationMenuLink>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-            <LocaleSwitcher currentLocale={locale} />
-          </div>
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline" size="icon" className="md:hidden"><Menu className="w-5 h-5" /></Button>
-            </SheetTrigger>
-            <SheetContent side="right">
-              <MobileNav locale={locale} />
-            </SheetContent>
-          </Sheet>
-        </div>
-      </header>
+      <SiteHeader locale={locale} transparentOnTop />
 
       {/* About Hero */}
       <section className="relative w-full overflow-hidden bg-white">
@@ -164,6 +132,9 @@ export default function AboutPage() {
               </Link>
               <Link href="https://www.linkedin.com/in/mechack-team-726b52258/" target="_blank" aria-label="LinkedIn" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
                 <Linkedin className="w-4 h-4" />
+              </Link>
+              <Link href="https://www.youtube.com/@Qaraba%C4%9FMechack" target="_blank" aria-label="YouTube" className="inline-flex p-2 rounded-full bg-white/10 hover:bg-white/20">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.002 3.002 0 0 0-2.113-2.126C19.585 3.5 12 3.5 12 3.5s-7.585 0-9.385.56A3.002 3.002 0 0 0 .502 6.186 31.54 31.54 0 0 0 0 12a31.54 31.54 0 0 0 .502 5.814 3.002 3.002 0 0 0 2.113 2.126C4.415 20.5 12 20.5 12 20.5s7.585 0 9.385-.56a3.002 3.002 0 0 0 2.113-2.126A31.54 31.54 0 0 0 24 12a31.54 31.54 0 0 0-.502-5.814ZM9.75 15.5v-7l6 3.5-6 3.5Z"/></svg>
               </Link>
             </div>
           </div>

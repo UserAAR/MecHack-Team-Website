@@ -18,7 +18,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     title: n.title,
     excerpt: n.excerpt ?? "",
     category: n.category ?? "Update",
-    date: n.created_at ?? new Date().toISOString(),
+    date: n.created_at ?? n.published_at ?? "1970-01-01T00:00:00.000Z",
     image: n.image_url ?? "/news/thumb.jpg",
     link: `/${locale}/news/${n.slug ?? n.id}`,
   }));
