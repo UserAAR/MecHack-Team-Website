@@ -8,9 +8,10 @@ type Props = {
   images: string[];
   alt: string;
   aspectClassName?: string;
+  controlsOnHover?: boolean;
 };
 
-export function ImageCarousel({ images, alt, aspectClassName }: Props) {
+export function ImageCarousel({ images, alt, aspectClassName, controlsOnHover = false }: Props) {
   const items = useMemo(() => (Array.isArray(images) ? images.filter(Boolean) : []), [images]);
   const [index, setIndex] = useState(0);
 
@@ -25,8 +26,12 @@ export function ImageCarousel({ images, alt, aspectClassName }: Props) {
 
   if (items.length === 0) return null;
 
+  const controlsClass = controlsOnHover
+    ? "opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto"
+    : "";
+
   return (
-    <div className="relative rounded-xl overflow-hidden ring-1 ring-black/5 bg-black">
+    <div className="group relative rounded-xl overflow-hidden ring-1 ring-black/5 bg-black">
       <div className={`relative w-full ${aspectClassName ?? "h-64 md:h-80"}`}>
         <Image src={items[index]} alt={alt} fill className="object-cover" priority sizes="(max-width: 768px) 100vw, 50vw" />
         <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,.25),rgba(0,0,0,0))]" />
@@ -38,7 +43,7 @@ export function ImageCarousel({ images, alt, aspectClassName }: Props) {
             type="button"
             aria-label="Previous image"
             onClick={() => go(-1)}
-            className="absolute left-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/80 hover:bg-white shadow"
+            className={`absolute left-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/80 hover:bg-white shadow ${controlsClass}`}
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -46,7 +51,7 @@ export function ImageCarousel({ images, alt, aspectClassName }: Props) {
             type="button"
             aria-label="Next image"
             onClick={() => go(1)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/80 hover:bg-white shadow"
+            className={`absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/80 hover:bg-white shadow ${controlsClass}`}
           >
             <ChevronRight className="w-5 h-5" />
           </button>

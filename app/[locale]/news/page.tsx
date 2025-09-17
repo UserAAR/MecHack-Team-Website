@@ -10,6 +10,7 @@ import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { getTranslations } from "next-intl/server";
 import { SiteHeader } from "@/components/shared/SiteHeader";
 import { formatDateUTC } from "@/lib/utils";
+import { ImageCarousel } from "@/components/shared/ImageCarousel";
 
 const BRAND = { cream: "#f5f2e1", navy: "#000080", gold: "#e38d1a" };
 
@@ -18,7 +19,7 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
-type NewsItem = { id: string; title: string; excerpt: string; category: string; date: string; image: string; link: string };
+type NewsItem = { id: string; title: string; excerpt: string; category: string; date: string; images: string[]; link: string };
 
 type Row = { id: string; title: string; excerpt: string | null; category: string | null; image_url: string | null; images?: string[] | null; published_at: string | null; created_at: string | null; slug: string | null };
 
@@ -31,15 +32,18 @@ async function getNews(locale: string): Promise<NewsItem[]> {
     .not("published_at", "is", null)
     .order("published_at", { ascending: false });
   const rows = (data ?? []) as Row[];
-  return rows.map((n) => ({
-    id: n.id,
-    title: n.title,
-    excerpt: n.excerpt ?? "",
-    category: n.category ?? "Update",
-    date: n.created_at ?? n.published_at ?? "1970-01-01T00:00:00.000Z",
-    image: (n.images && n.images.length > 0 ? n.images[0] : (n.image_url ?? "/news/thumb.jpg"))!,
-    link: `/${locale}/news/${n.slug ?? n.id}`,
-  }));
+  return rows.map((n) => {
+    const imgs = (n.images && n.images.length > 0) ? n.images : [n.image_url ?? "/news/thumb.jpg"];
+    return {
+      id: n.id,
+      title: n.title,
+      excerpt: n.excerpt ?? "",
+      category: n.category ?? "Update",
+      date: n.created_at ?? n.published_at ?? "1970-01-01T00:00:00.000Z",
+      images: imgs,
+      link: `/${locale}/news/${n.slug ?? n.id}`,
+    } as NewsItem;
+  });
 }
 
 export default async function NewsPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -67,8 +71,8 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
           {items.map((n) => (
             <div key={n.id} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-shadow group rounded-xl bg-white">
               <div className="relative h-56">
-                <Image src={n.image} alt={n.title} fill className="object-cover group-hover:scale-[1.03] transition-transform duration-500" />
-                <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,.6),rgba(0,0,0,0.05))]" />
+                <ImageCarousel images={n.images.slice(0, 6)} alt={n.title} aspectClassName="h-56" controlsOnHover />
+                <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,.6),rgba(0,0,0,0.05))] pointer-events-none" />
                 <Badge className="absolute left-3 top-3 bg-white/90 text-black">{n.category}</Badge>
               </div>
               <div className="p-4">

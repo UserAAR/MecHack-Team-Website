@@ -19,7 +19,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     excerpt: n.excerpt ?? "",
     category: n.category ?? "Update",
     date: n.created_at ?? n.published_at ?? "1970-01-01T00:00:00.000Z",
-    image: (Array.isArray(n.images) && n.images.length > 0 ? n.images[0] : (n.image_url ?? "/news/thumb.jpg")),
+    images: (Array.isArray(n.images) && n.images.length > 0 ? n.images : (n.image_url ? [n.image_url] : ["/news/thumb.jpg"])),
     link: `/${locale}/news/${n.slug ?? n.id}`,
   }));
   return <HomeClient locale={locale} latestNews={latestNews} />;

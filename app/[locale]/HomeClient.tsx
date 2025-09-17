@@ -15,8 +15,9 @@ import { FeatureCard } from "@/components/shared/FeatureCard";
 import { useTranslations } from "next-intl";
 import { SiteHeader } from "@/components/shared/SiteHeader";
 import { formatDateUTC } from "@/lib/utils";
+import { ImageCarousel } from "@/components/shared/ImageCarousel";
 
-export type LatestNewsItem = { id: string; title: string; excerpt: string; category: string; date: string; image: string; link: string };
+export type LatestNewsItem = { id: string; title: string; excerpt: string; category: string; date: string; images: string[]; link: string };
 
 type Props = { locale: string; latestNews: LatestNewsItem[] };
 
@@ -132,8 +133,8 @@ export default function HomeClient({ locale, latestNews }: Props) {
               <motion.div key={n.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: idx * 0.05 }} className="h-full">
                 <Card className="h-full overflow-hidden border-0 shadow-md hover:shadow-lg transition-shadow group flex flex-col">
                   <div className="relative h-56">
-                    <Image src={n.image} alt={n.title} fill className="object-cover group-hover:scale-[1.03] transition-transform duration-500" />
-                    <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,.6),rgba(0,0,0,0.05))]" />
+                    <ImageCarousel images={(n.images && n.images.length ? n.images : ["/news/thumb.jpg"]).slice(0, 6)} alt={n.title} aspectClassName="h-56" controlsOnHover />
+                    <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,.6),rgba(0,0,0,0.05))] pointer-events-none" />
                     <Badge className="absolute left-3 top-3 bg-white/90 text-black">{n.category}</Badge>
                   </div>
                   <CardHeader className="pb-0"><CardTitle className="text-xl line-clamp-2">{n.title}</CardTitle></CardHeader>
